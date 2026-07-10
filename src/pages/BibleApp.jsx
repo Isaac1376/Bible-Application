@@ -101,7 +101,10 @@ function BibleApp({ language = 'en' }) {
 
     return (
         <div className="space-y-8">
-            <motion.section initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="rounded-[2rem] border border-[#9b6a2a]/40 bg-[#180e08]/90 p-8 shadow-[0_0_70px_rgba(179,125,40,0.16)] sm:p-10">
+            <motion.section initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[2rem] border border-[#f0c66d]/60 bg-[#180e08]/90 p-8 shadow-[0_0_70px_rgba(179,125,40,0.16)] sm:p-10">
+                <div className="pointer-events-none absolute inset-0 rounded-[2rem] border border-[#f4d178]/30" />
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,221,120,0.24),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,187,45,0.18),_transparent_40%)]" />
+                <div className="pointer-events-none absolute inset-0 animate-[pulse_3s_ease-in-out_infinite] opacity-70 [background-image:linear-gradient(110deg,transparent_0%,rgba(255,240,180,0.16)_45%,transparent_90%)] [background-size:220%_220%]" />
                 <div className="mb-4 flex items-center gap-3 text-[#f0c66d]">
                     <BookOpen size={22} />
                     <h1 className="font-[Times_New_Roman,serif] text-3xl text-[#fff2c8] sm:text-4xl">{copy.title}</h1>
@@ -110,7 +113,9 @@ function BibleApp({ language = 'en' }) {
             </motion.section>
 
             <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-                <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-[1.6rem] border border-[#8d5623]/40 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
+                <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[1.6rem] border border-[#f0c66d]/50 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
+                    <div className="pointer-events-none absolute inset-0 rounded-[1.6rem] border border-[#f5d681]/25" />
+                    <div className="pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-40 [background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)] [background-size:200%_200%]" />
                     <div className="mb-4 flex items-center gap-3 text-[#f0c66d]">
                         <Search size={18} />
                         <h2 className="font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{copy.lookupTitle}</h2>
@@ -127,7 +132,9 @@ function BibleApp({ language = 'en' }) {
                     </div>
                 </motion.article>
 
-                <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="rounded-[1.6rem] border border-[#8d5623]/40 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
+                <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="relative overflow-hidden rounded-[1.6rem] border border-[#f0c66d]/50 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
+                    <div className="pointer-events-none absolute inset-0 rounded-[1.6rem] border border-[#f5d681]/25" />
+                    <div className="pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-40 [background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)] [background-size:200%_200%]" />
                     <div className="mb-4 flex items-center gap-3 text-[#f0c66d]">
                         <Sparkles size={18} />
                         <h2 className="font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{copy.chapterTitle}</h2>
@@ -151,7 +158,9 @@ function BibleApp({ language = 'en' }) {
                 </motion.article>
             </section>
 
-            <section className="rounded-[1.6rem] border border-[#8d5623]/40 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
+            <section className="relative overflow-hidden rounded-[1.6rem] border border-[#f0c66d]/50 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
+                <div className="pointer-events-none absolute inset-0 rounded-[1.6rem] border border-[#f5d681]/25" />
+                <div className="pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-35 [background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)] [background-size:200%_200%]" />
                 <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                     <div>
                         <h2 className="font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{copy.booksTitle}</h2>
