@@ -12,6 +12,8 @@
 
 ## 🌟 About The Project
 
+https://isaac1376.github.io/Bible-Application
+
 **Bible Timeline Explorer** is a bilingual Bible learning platform designed to help users explore the complete Bible journey.
 
 The application provides:
