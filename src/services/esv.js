@@ -1,4 +1,5 @@
 const ESV_API_URL = 'https://api.esv.org/v3/passage/text/'
+const BIBLE_API_URL = 'https://bible-api.com'
 
 export async function lookupPassage(reference) {
   const token = import.meta.env.VITE_ESV_API_TOKEN
@@ -31,7 +32,7 @@ export async function lookupPassage(reference) {
     }
   }
 
-  const fallbackResponse = await fetch(`https://bible-api.com/${encodeURIComponent(cleanedReference)}`)
+  const fallbackResponse = await fetch(`${BIBLE_API_URL}/${encodeURIComponent(cleanedReference)}`)
   if (!fallbackResponse.ok) {
     throw new Error('lookup-failed')
   }
@@ -42,5 +43,25 @@ export async function lookupPassage(reference) {
   return {
     reference: fallbackData?.reference || cleanedReference,
     text: fallbackText.replace(/\n/g, ' ').trim()
+  }
+}
+
+export async function readChapter(book, chapter) {
+  const query = `${book.trim()} ${chapter.trim()}`
+  const response = await fetch(`${BIBLE_API_URL}/${encodeURIComponent(query)}?translation=kjv`)
+
+  if (!response.ok) {
+    throw new Error('chapter-load-failed')
+  }
+
+  const data = await response.json()
+  const verses = data?.verses || []
+
+  return {
+    reference: data?.reference || query,
+    text: verses
+      .map((verse) => `${verse.verse} ${verse.text}`)
+      .join('\n')
+      .trim()
   }
 }

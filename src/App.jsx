@@ -7,6 +7,7 @@ import BookDetail from './pages/BookDetail'
 import Timeline from './pages/Timeline'
 import About from './pages/About'
 import Help from './pages/Help'
+import BibleApp from './pages/BibleApp'
 import AdminLogin from './pages/AdminLogin'
 import AdminDashboard from './pages/AdminDashboard'
 import './App.css'
@@ -24,6 +25,7 @@ function App() {
           <Route path="/books/:id" element={<BookDetail language={language} />} />
           <Route path="/timeline" element={<Timeline language={language} />} />
           <Route path="/help" element={<Help language={language} />} />
+          <Route path="/bible-app" element={<BibleApp />} />
           <Route path="/about" element={<About language={language} />} />
           <Route path="/admin/login" element={isAdmin ? <Navigate to="/admin" replace /> : <AdminLogin language={language} onAdminLogin={setIsAdmin} />} />
           <Route path="/admin" element={isAdmin ? <AdminDashboard language={language} /> : <Navigate to="/admin/login" replace />} />

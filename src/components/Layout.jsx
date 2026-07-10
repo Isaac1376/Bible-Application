@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { BookOpen, Compass, HelpCircle, Home, Sparkles } from 'lucide-react'
+import { BookOpen, Compass, HelpCircle, Home, Sparkles, TabletSmartphone } from 'lucide-react'
 import { Link, NavLink, Outlet } from 'react-router-dom'
 
 const navItems = [
@@ -7,6 +7,7 @@ const navItems = [
     { to: '/books', label: { en: 'Books', ta: 'புத்தகங்கள்' }, icon: BookOpen },
     { to: '/timeline', label: { en: 'Timeline', ta: 'காலவரிசை' }, icon: Compass },
     { to: '/help', label: { en: 'Help', ta: 'உதவி' }, icon: HelpCircle },
+    { to: '/bible-app', label: { en: 'Bible App', ta: 'பைபிள் ஆப்' }, icon: TabletSmartphone },
     { to: '/about', label: { en: 'About', ta: 'பற்றி' }, icon: Sparkles }
 ]
 
