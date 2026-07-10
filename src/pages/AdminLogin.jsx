@@ -15,7 +15,7 @@ function AdminLogin({ language, onAdminLogin }) {
             onAdminLogin(true)
             navigate('/admin')
         } else {
-            setError(language === 'en' ? 'Use mosay@1376 / 311706744@1376 for demo access.' : 'டெமோ அணுகலுக்கு mosay@1376 / 311706744@1376 பயன்படுத்தவும்.')
+            setError(language === 'en' ? 'Invalid credentials. Please try again.' : ' தவறான சான்றுகள். தயவுசெய்து மீண்டும் முயற்சிக்கவும்.')
         }
     }
 
