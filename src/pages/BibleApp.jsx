@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, BookOpen, Search, Sparkles } from 'lucide-react'
+import { ArrowRight, BookOpen, Search, Sparkles, Bookmark, Moon, Sun, Trash2, Copy, Check } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { initialBooks } from '../data/expandedBooks'
 import { lookupPassage, readChapter } from '../services/esv'
@@ -12,6 +12,8 @@ const content = {
         lookupTitle: 'Live scripture lookup',
         lookupPlaceholder: 'Try John 3:16 or Genesis 1:1',
         lookupButton: 'Lookup',
+        keywordSearch: 'Search by keyword',
+        keywordPlaceholder: 'Search for words like "love", "faith", "prayer"...',
         chapterTitle: 'Read a full chapter',
         chapterPlaceholder: 'Search books',
         booksTitle: 'Bible books',
@@ -19,7 +21,13 @@ const content = {
         noReference: 'Enter a verse reference to load the real scripture text.',
         loadingChapter: 'Loading chapter text...',
         chapterError: 'The chapter could not be loaded right now. Try a different reference or add a Bible API key.',
-        lookupError: 'The Bible service could not load this reference right now. Add your ESV API token for live results.'
+        lookupError: 'The Bible service could not load this reference right now. Add your ESV API token for live results.',
+        bookmarks: 'Saved Bookmarks',
+        noBookmarks: 'No bookmarks yet. Save your favorite verses!',
+        darkMode: 'Dark Mode',
+        lightMode: 'Light Mode',
+        removeBookmark: 'Remove',
+        copyVerse: 'Copy'
     },
     ta: {
         title: 'பைபிள் ஆப்',
@@ -27,6 +35,8 @@ const content = {
         lookupTitle: 'நேரடி வசனத் தேடல்',
         lookupPlaceholder: 'John 3:16 அல்லது Genesis 1:1 போன்றவற்றை முயற்சிக்கவும்',
         lookupButton: 'தேடு',
+        keywordSearch: 'குறிப்பை வார்த்தையால் தேடு',
+        keywordPlaceholder: '"love", "faith", "prayer" போன்ற வார்த்தைகளைத் தேடு...',
         chapterTitle: 'முழு அதிகாரம் வாசிக்கவும்',
         chapterPlaceholder: 'புத்தகங்களைத் தேடு',
         booksTitle: 'பைபிள் புத்தகங்கள்',
@@ -34,7 +44,13 @@ const content = {
         noReference: 'உண்மையான வேதவசனங்களை ஏற்ற ஒரு வசன குறிப்பை உள்ளிடவும்.',
         loadingChapter: 'அதிகாரம் ஏற்றப்படுகிறது...',
         chapterError: 'இந்த அதிகாரம் இப்போது ஏற்றப்படவில்லை. வேறு குறிப்பு முயற்சிக்கவும் அல்லது பைபிள் API விசையைச் சேர்க்கவும்.',
-        lookupError: 'இந்த குறிப்பு இப்போது ஏற்றப்படவில்லை. நேரடி முடிவுகளுக்கு உங்கள் ESV API டோக்கனை சேர்க்கவும்.'
+        lookupError: 'இந்த குறிப்பு இப்போது ஏற்றப்படவில்லை. நேரடி முடிவுகளுக்கு உங்கள் ESV API டோக்கனை சேர்க்கவும்.',
+        bookmarks: 'சேமிக்கப்பட்ட புக்மார்க்குகள்',
+        noBookmarks: 'இன்னும் புக்மார்க்குகள் இல்லை. உங்கள் விருப்ப வசனங்களைச் சேமிக்கவும்!',
+        darkMode: 'இருண்ட பயன்முறை',
+        lightMode: 'ஒளி பயன்முறை',
+        removeBookmark: 'அகற்று',
+        copyVerse: 'நகல்'
     }
 }
 
@@ -54,12 +70,38 @@ function BibleApp({ language = 'en' }) {
     })
     const [loading, setLoading] = useState(false)
     const [chapterLoading, setChapterLoading] = useState(false)
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('bibleDarkMode') === 'true'
+        }
+        return true
+    })
+    const [bookmarks, setBookmarks] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const saved = localStorage.getItem('bibleBookmarks')
+            return saved ? JSON.parse(saved) : []
+        }
+        return []
+    })
+    const [copied, setCopied] = useState(null)
+    const [keywordSearch, setKeywordSearch] = useState('')
+    const [keywordResults, setKeywordResults] = useState([])
 
     const filteredBooks = useMemo(() => {
         const query = search.toLowerCase().trim()
         if (!query) return initialBooks
         return initialBooks.filter((book) => `${book.bookName.en} ${book.bookName.ta} ${book.introduction.en} ${book.introduction.ta}`.toLowerCase().includes(query))
     }, [search])
+
+    // Save bookmarks to localStorage
+    useEffect(() => {
+        localStorage.setItem('bibleBookmarks', JSON.stringify(bookmarks))
+    }, [bookmarks])
+
+    // Save dark mode preference to localStorage
+    useEffect(() => {
+        localStorage.setItem('bibleDarkMode', isDarkMode.toString())
+    }, [isDarkMode])
 
     const activeBook = initialBooks.find((book) => book.bookName.en === selectedBook) || initialBooks[0]
     const chapterOptions = Array.from({ length: activeBook.chapters }, (_, index) => String(index + 1))
@@ -99,92 +141,207 @@ function BibleApp({ language = 'en' }) {
         }
     }
 
-    return (
-        <div className="space-y-8">
-            <motion.section initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[2rem] border border-[#f0c66d]/60 bg-[#180e08]/90 p-8 shadow-[0_0_70px_rgba(179,125,40,0.16)] sm:p-10">
-                <div className="pointer-events-none absolute inset-0 rounded-[2rem] border border-[#f4d178]/30" />
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,221,120,0.24),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,187,45,0.18),_transparent_40%)]" />
-                <div className="pointer-events-none absolute inset-0 animate-[pulse_3s_ease-in-out_infinite] opacity-70 [background-image:linear-gradient(110deg,transparent_0%,rgba(255,240,180,0.16)_45%,transparent_90%)] [background-size:220%_220%]" />
-                <div className="mb-4 flex items-center gap-3 text-[#f0c66d]">
-                    <BookOpen size={22} />
-                    <h1 className="font-[Times_New_Roman,serif] text-3xl text-[#fff2c8] sm:text-4xl">{copy.title}</h1>
-                </div>
-                <p className="max-w-3xl text-lg leading-8 text-[#d8c39b]">{copy.intro}</p>
-            </motion.section>
+    const addBookmark = () => {
+        const newBookmark = { id: Date.now(), reference: result.reference, text: result.text }
+        setBookmarks([...bookmarks, newBookmark])
+    }
 
-            <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-                <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[1.6rem] border border-[#f0c66d]/50 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
-                    <div className="pointer-events-none absolute inset-0 rounded-[1.6rem] border border-[#f5d681]/25" />
-                    <div className="pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-40 [background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)] [background-size:200%_200%]" />
-                    <div className="mb-4 flex items-center gap-3 text-[#f0c66d]">
-                        <Search size={18} />
-                        <h2 className="font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{copy.lookupTitle}</h2>
+    const removeBookmark = (id) => {
+        setBookmarks(bookmarks.filter(b => b.id !== id))
+    }
+
+    const copyToClipboard = (text, id) => {
+        navigator.clipboard.writeText(text)
+        setCopied(id)
+        setTimeout(() => setCopied(null), 2000)
+    }
+
+    const handleKeywordSearch = async () => {
+        if (!keywordSearch.trim()) {
+            setKeywordResults([])
+            return
+        }
+        // Search through bookmarks for matching keywords
+        const keyword = keywordSearch.toLowerCase()
+        const matches = bookmarks.filter(b =>
+            b.text.toLowerCase().includes(keyword) || b.reference.toLowerCase().includes(keyword)
+        )
+        setKeywordResults(matches)
+    }
+
+    return (
+        <div className={isDarkMode ? 'bg-[#0a0605] text-white' : 'bg-[#f5f1e8] text-[#1a0f0a]'}>
+            <div className="space-y-8 p-4">
+                {/* Dark Mode Toggle */}
+                <div className="flex justify-end">
+                    <button
+                        onClick={() => setIsDarkMode(!isDarkMode)}
+                        className={`rounded-full p-3 transition ${isDarkMode ? 'bg-[#1b1209] text-[#f0c66d]' : 'bg-[#e8dcc8] text-[#b07c22]'}`}
+                    >
+                        {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+                    </button>
+                </div>
+
+                {/* Header */}
+                <motion.section initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className={`relative overflow-hidden rounded-[2rem] border ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#180e08]/90' : 'border-[#d4a574]/60 bg-[#fff5e6]/90'} p-8 shadow-[0_0_70px_rgba(179,125,40,0.16)] sm:p-10`}>
+                    <div className={`pointer-events-none absolute inset-0 rounded-[2rem] border ${isDarkMode ? 'border-[#f4d178]/30' : 'border-[#e0c08a]/30'}`} />
+                    <div className={`pointer-events-none absolute inset-0 ${isDarkMode ? 'bg-[radial-gradient(circle_at_top_left,_rgba(255,221,120,0.24),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,187,45,0.18),_transparent_40%)]' : 'bg-[radial-gradient(circle_at_top_left,_rgba(240,198,109,0.18),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,187,45,0.12),_transparent_40%)]'}`} />
+                    <div className={`pointer-events-none absolute inset-0 animate-[pulse_3s_ease-in-out_infinite] opacity-70 ${isDarkMode ? '[background-image:linear-gradient(110deg,transparent_0%,rgba(255,240,180,0.16)_45%,transparent_90%)]' : '[background-image:linear-gradient(110deg,transparent_0%,rgba(240,198,109,0.12)_45%,transparent_90%)]'} [background-size:220%_220%]`} />
+                    <div className={`mb-4 flex items-center gap-3 ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>
+                        <BookOpen size={22} />
+                        <h1 className={`font-[Times_New_Roman,serif] text-3xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'} sm:text-4xl`}>{copy.title}</h1>
+                    </div>
+                    <p className={`max-w-3xl text-lg leading-8 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{copy.intro}</p>
+                </motion.section>
+
+                <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+                    <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className={`relative overflow-hidden rounded-[1.6rem] border ${isDarkMode ? 'border-[#f0c66d]/50 bg-[#140f09]/90' : 'border-[#d4a574]/50 bg-[#fff9f0]/90'} p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]`}>
+                        <div className={`pointer-events-none absolute inset-0 rounded-[1.6rem] border ${isDarkMode ? 'border-[#f5d681]/25' : 'border-[#e0c08a]/20'}`} />
+                        <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-40 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
+                        <div className={`mb-4 flex items-center gap-3 ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>
+                            <Search size={18} />
+                            <h2 className={`font-[Times_New_Roman,serif] text-2xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.lookupTitle}</h2>
+                        </div>
+                        <div className="flex flex-col gap-3 sm:flex-row">
+                            <input value={reference} onChange={(e) => setReference(e.target.value)} className={`flex-1 rounded-2xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3`} placeholder={copy.lookupPlaceholder} />
+                            <button onClick={handleLookup} className={`rounded-full border ${isDarkMode ? 'border-[#f0c66d] bg-[#b07c22] text-[#fff7df]' : 'border-[#d4a574] bg-[#d4a574] text-white'} px-4 py-3 font-semibold`}>
+                                {loading ? 'Loading...' : copy.lookupButton}
+                            </button>
+                        </div>
+                        <div className={`mt-4 rounded-[1.1rem] border ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209] text-[#d8c39b]' : 'border-[#e0c08a]/50 bg-[#fffcf7] text-[#6b4d32]'} p-4 text-sm leading-7`}>
+                            <div className="mb-3 flex items-center justify-between">
+                                <p className={`font-semibold uppercase tracking-[0.2em] ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>{result.reference}</p>
+                                <button
+                                    onClick={addBookmark}
+                                    className={`rounded-lg px-3 py-1 text-xs font-semibold flex items-center gap-2 transition ${isDarkMode ? 'bg-[#b07c22]/20 text-[#f0c66d] hover:bg-[#b07c22]/40' : 'bg-[#d4a574]/20 text-[#b07c22] hover:bg-[#d4a574]/40'}`}
+                                >
+                                    <Bookmark size={14} /> {copy.copyVerse}
+                                </button>
+                            </div>
+                            <p className="whitespace-pre-wrap">{result.text}</p>
+                        </div>
+                    </motion.article>
+
+                    <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className={`relative overflow-hidden rounded-[1.6rem] border ${isDarkMode ? 'border-[#f0c66d]/50 bg-[#140f09]/90' : 'border-[#d4a574]/50 bg-[#fff9f0]/90'} p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]`}>
+                        <div className={`pointer-events-none absolute inset-0 rounded-[1.6rem] border ${isDarkMode ? 'border-[#f5d681]/25' : 'border-[#e0c08a]/20'}`} />
+                        <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-40 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
+                        <div className={`mb-4 flex items-center gap-3 ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>
+                            <Sparkles size={18} />
+                            <h2 className={`font-[Times_New_Roman,serif] text-2xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.chapterTitle}</h2>
+                        </div>
+                        <div className="flex flex-col gap-3 sm:flex-row">
+                            <select value={selectedBook} onChange={(e) => setSelectedBook(e.target.value)} className={`rounded-2xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3`}>
+                                {initialBooks.map((book) => (
+                                    <option key={book.id} value={book.bookName.en}>{book.bookName.en}</option>
+                                ))}
+                            </select>
+                            <select value={selectedChapter} onChange={(e) => setSelectedChapter(e.target.value)} className={`rounded-2xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3`}>
+                                {chapterOptions.map((chapter) => (
+                                    <option key={chapter} value={chapter}>Chapter {chapter}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className={`mt-4 rounded-[1.1rem] border ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209] text-[#d8c39b]' : 'border-[#e0c08a]/50 bg-[#fffcf7] text-[#6b4d32]'} p-4 text-sm leading-7`}>
+                            <p className={`mb-2 font-semibold uppercase tracking-[0.2em] ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>{chapterLoading ? copy.loadingChapter : chapterResult.reference}</p>
+                            <p className="whitespace-pre-wrap">{chapterResult.text}</p>
+                        </div>
+                    </motion.article>
+                </section>
+
+                {/* Keyword Search Section */}
+                <section className={`relative overflow-hidden rounded-[1.6rem] border ${isDarkMode ? 'border-[#f0c66d]/50 bg-[#140f09]/90' : 'border-[#d4a574]/50 bg-[#fff9f0]/90'} p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]`}>
+                    <div className={`pointer-events-none absolute inset-0 rounded-[1.6rem] border ${isDarkMode ? 'border-[#f5d681]/25' : 'border-[#e0c08a]/20'}`} />
+                    <div className="mb-4">
+                        <h2 className={`font-[Times_New_Roman,serif] text-2xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.keywordSearch}</h2>
                     </div>
                     <div className="flex flex-col gap-3 sm:flex-row">
-                        <input value={reference} onChange={(e) => setReference(e.target.value)} className="flex-1 rounded-2xl border border-[#7f5128]/50 bg-[#120c07] px-4 py-3 text-[#fff7df]" placeholder={copy.lookupPlaceholder} />
-                        <button onClick={handleLookup} className="rounded-full border border-[#f0c66d] bg-[#b07c22] px-4 py-3 font-semibold text-[#fff7df]">
-                            {loading ? 'Loading...' : copy.lookupButton}
+                        <input
+                            value={keywordSearch}
+                            onChange={(e) => setKeywordSearch(e.target.value)}
+                            className={`flex-1 rounded-2xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3`}
+                            placeholder={copy.keywordPlaceholder}
+                        />
+                        <button
+                            onClick={handleKeywordSearch}
+                            className={`rounded-full border ${isDarkMode ? 'border-[#f0c66d] bg-[#b07c22] text-[#fff7df]' : 'border-[#d4a574] bg-[#d4a574] text-white'} px-4 py-3 font-semibold`}
+                        >
+                            {copy.lookupButton}
                         </button>
                     </div>
-                    <div className="mt-4 rounded-[1.1rem] border border-[#6c4320]/50 bg-[#1b1209] p-4 text-sm leading-7 text-[#d8c39b]">
-                        <p className="mb-2 font-semibold uppercase tracking-[0.2em] text-[#f0c66d]">{result.reference}</p>
-                        <p className="whitespace-pre-wrap">{result.text}</p>
-                    </div>
-                </motion.article>
-
-                <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="relative overflow-hidden rounded-[1.6rem] border border-[#f0c66d]/50 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
-                    <div className="pointer-events-none absolute inset-0 rounded-[1.6rem] border border-[#f5d681]/25" />
-                    <div className="pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-40 [background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)] [background-size:200%_200%]" />
-                    <div className="mb-4 flex items-center gap-3 text-[#f0c66d]">
-                        <Sparkles size={18} />
-                        <h2 className="font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{copy.chapterTitle}</h2>
-                    </div>
-                    <div className="flex flex-col gap-3 sm:flex-row">
-                        <select value={selectedBook} onChange={(e) => setSelectedBook(e.target.value)} className="rounded-2xl border border-[#7f5128]/50 bg-[#120c07] px-4 py-3 text-[#fff7df]">
-                            {initialBooks.map((book) => (
-                                <option key={book.id} value={book.bookName.en}>{book.bookName.en}</option>
+                    {keywordResults.length > 0 && (
+                        <div className="mt-4 space-y-3">
+                            {keywordResults.map(result => (
+                                <div key={result.id} className={`rounded-lg p-3 border ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209]' : 'border-[#e0c08a]/50 bg-[#fffcf7]'}`}>
+                                    <p className={`font-semibold ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>{result.reference}</p>
+                                    <p className={`text-sm mt-1 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'} line-clamp-2`}>{result.text}</p>
+                                </div>
                             ))}
-                        </select>
-                        <select value={selectedChapter} onChange={(e) => setSelectedChapter(e.target.value)} className="rounded-2xl border border-[#7f5128]/50 bg-[#120c07] px-4 py-3 text-[#fff7df]">
-                            {chapterOptions.map((chapter) => (
-                                <option key={chapter} value={chapter}>Chapter {chapter}</option>
+                        </div>
+                    )}
+                </section>
+
+                {/* Bookmarks Section */}
+                <section className={`relative overflow-hidden rounded-[1.6rem] border ${isDarkMode ? 'border-[#f0c66d]/50 bg-[#140f09]/90' : 'border-[#d4a574]/50 bg-[#fff9f0]/90'} p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]`}>
+                    <div className={`pointer-events-none absolute inset-0 rounded-[1.6rem] border ${isDarkMode ? 'border-[#f5d681]/25' : 'border-[#e0c08a]/20'}`} />
+                    <h2 className={`font-[Times_New_Roman,serif] text-2xl mb-4 ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.bookmarks}</h2>
+                    {bookmarks.length === 0 ? (
+                        <p className={`text-center py-8 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{copy.noBookmarks}</p>
+                    ) : (
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {bookmarks.map(mark => (
+                                <div key={mark.id} className={`rounded-lg p-4 border ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209]' : 'border-[#e0c08a]/50 bg-[#fffcf7]'}`}>
+                                    <div className="flex items-start justify-between mb-2">
+                                        <p className={`font-semibold ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>{mark.reference}</p>
+                                        <button
+                                            onClick={() => removeBookmark(mark.id)}
+                                            className={`text-xs p-1 rounded ${isDarkMode ? 'hover:bg-[#6c4320]/50 text-[#d8c39b]' : 'hover:bg-[#d4a574]/20 text-[#6b4d32]'}`}
+                                        >
+                                            <Trash2 size={14} />
+                                        </button>
+                                    </div>
+                                    <p className={`text-sm mb-3 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'} line-clamp-3`}>{mark.text}</p>
+                                    <button
+                                        onClick={() => copyToClipboard(`${mark.reference}\n\n${mark.text}`, mark.id)}
+                                        className={`text-xs px-2 py-1 rounded flex items-center gap-1 ${isDarkMode ? 'bg-[#b07c22]/20 text-[#f0c66d] hover:bg-[#b07c22]/40' : 'bg-[#d4a574]/20 text-[#b07c22] hover:bg-[#d4a574]/40'}`}
+                                    >
+                                        {copied === mark.id ? <Check size={12} /> : <Copy size={12} />}
+                                        {copied === mark.id ? 'Copied!' : copy.copyVerse}
+                                    </button>
+                                </div>
                             ))}
-                        </select>
-                    </div>
-                    <div className="mt-4 rounded-[1.1rem] border border-[#6c4320]/50 bg-[#1b1209] p-4 text-sm leading-7 text-[#d8c39b]">
-                        <p className="mb-2 font-semibold uppercase tracking-[0.2em] text-[#f0c66d]">{chapterLoading ? copy.loadingChapter : chapterResult.reference}</p>
-                        <p className="whitespace-pre-wrap">{chapterResult.text}</p>
-                    </div>
-                </motion.article>
-            </section>
+                        </div>
+                    )}
+                </section>
 
-            <section className="relative overflow-hidden rounded-[1.6rem] border border-[#f0c66d]/50 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
-                <div className="pointer-events-none absolute inset-0 rounded-[1.6rem] border border-[#f5d681]/25" />
-                <div className="pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-35 [background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)] [background-size:200%_200%]" />
-                <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <div>
-                        <h2 className="font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{copy.booksTitle}</h2>
-                        <p className="mt-2 text-[#d8c39b]">{copy.booksIntro}</p>
+                {/* Books Section */}
+                <section className={`relative overflow-hidden rounded-[1.6rem] border ${isDarkMode ? 'border-[#f0c66d]/50 bg-[#140f09]/90' : 'border-[#d4a574]/50 bg-[#fff9f0]/90'} p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]`}>
+                    <div className={`pointer-events-none absolute inset-0 rounded-[1.6rem] border ${isDarkMode ? 'border-[#f5d681]/25' : 'border-[#e0c08a]/20'}`} />
+                    <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-35 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
+                    <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <h2 className={`font-[Times_New_Roman,serif] text-2xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.booksTitle}</h2>
+                            <p className={`mt-2 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{copy.booksIntro}</p>
+                        </div>
+                        <div className={`flex items-center gap-2 rounded-2xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07]' : 'border-[#d4a574]/50 bg-[#fffcf7]'} px-3 py-2`}>
+                            <Search size={16} className={isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'} />
+                            <input value={search} onChange={(e) => setSearch(e.target.value)} className={`w-full bg-transparent text-sm outline-none sm:w-56 ${isDarkMode ? 'text-[#fff7df]' : 'text-[#4a2c15]'}`} placeholder={copy.chapterPlaceholder} />
+                        </div>
                     </div>
-                    <div className="flex items-center gap-2 rounded-2xl border border-[#7f5128]/50 bg-[#120c07] px-3 py-2">
-                        <Search size={16} className="text-[#f0c66d]" />
-                        <input value={search} onChange={(e) => setSearch(e.target.value)} className="w-full bg-transparent text-sm text-[#fff7df] outline-none sm:w-56" placeholder={copy.chapterPlaceholder} />
-                    </div>
-                </div>
 
-                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                    {filteredBooks.map((book) => (
-                        <Link key={book.id} to={`/books/${book.id}`} className="rounded-[1.2rem] border border-[#6c4320]/50 bg-[#1b1209] p-4 transition hover:border-[#f0c66d] hover:translate-y-[-2px]">
-                            <div className="mb-3 flex items-center justify-between">
-                                <span className="rounded-full border border-[#d6a84f]/40 bg-[#24130a] px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-[#f0c66d]">{book.testament}</span>
-                                <span className="text-sm text-[#e0c081]">{book.chapters} ch.</span>
-                            </div>
-                            <h3 className="font-[Times_New_Roman,serif] text-xl text-[#fff2c8]">{language === 'en' ? book.bookName.en : book.bookName.ta}</h3>
-                            <p className="mt-2 text-sm text-[#d8c39b]">{language === 'en' ? book.introduction.en : book.introduction.ta}</p>
-                        </Link>
-                    ))}
-                </div>
-            </section>
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        {filteredBooks.map((book) => (
+                            <Link key={book.id} to={`/books/${book.id}`} className={`rounded-[1.2rem] border ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209] hover:border-[#f0c66d]' : 'border-[#e0c08a]/50 bg-[#fffcf7] hover:border-[#d4a574]'} p-4 transition hover:translate-y-[-2px]`}>
+                                <div className="mb-3 flex items-center justify-between">
+                                    <span className={`rounded-full border ${isDarkMode ? 'border-[#d6a84f]/40 bg-[#24130a] text-[#f0c66d]' : 'border-[#d4a574]/40 bg-[#fffcf7] text-[#b07c22]'} px-3 py-1 text-[10px] uppercase tracking-[0.3em]`}>{book.testament}</span>
+                                    <span className={`text-sm ${isDarkMode ? 'text-[#e0c081]' : 'text-[#b07c22]'}`}>{book.chapters} ch.</span>
+                                </div>
+                                <h3 className={`font-[Times_New_Roman,serif] text-xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{language === 'en' ? book.bookName.en : book.bookName.ta}</h3>
+                                <p className={`mt-2 text-sm ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{language === 'en' ? book.introduction.en : book.introduction.ta}</p>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
+            </div>
         </div>
     )
 }
