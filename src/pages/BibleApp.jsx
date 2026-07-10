@@ -183,9 +183,9 @@ function BibleApp({ language = 'en' }) {
                 </div>
 
                 {/* Header */}
-                <motion.section initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className={`relative overflow-hidden rounded-[2rem] border ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#180e08]/90' : 'border-[#d4a574]/60 bg-[#fff5e6]/90'} p-8 shadow-[0_0_70px_rgba(179,125,40,0.16)] sm:p-10`}>
-                    <div className={`pointer-events-none absolute inset-0 rounded-[2rem] border ${isDarkMode ? 'border-[#f4d178]/30' : 'border-[#e0c08a]/30'}`} />
-                    <div className={`pointer-events-none absolute inset-0 ${isDarkMode ? 'bg-[radial-gradient(circle_at_top_left,_rgba(255,221,120,0.24),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,187,45,0.18),_transparent_40%)]' : 'bg-[radial-gradient(circle_at_top_left,_rgba(240,198,109,0.18),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,187,45,0.12),_transparent_40%)]'}`} />
+                <motion.section initial={{ opacity: 0, y: 24, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6 }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/70 bg-[#180e08]/90' : 'border-[#d4a574]/70 bg-[#fff5e6]/90'} p-8 shadow-[0_0_100px_rgba(179,125,40,0.3)] sm:p-10`}>
+                    <motion.div animate={{ borderColor: isDarkMode ? ['rgba(240,198,109,0.4)', 'rgba(255,240,180,0.8)', 'rgba(240,198,109,0.4)'] : ['rgba(212,165,116,0.4)', 'rgba(240,198,109,0.6)', 'rgba(212,165,116,0.4)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f4d178]/50' : 'border-[#e0c08a]/40'}`} />
+                    <div className={`pointer-events-none absolute inset-0 rounded-3xl ${isDarkMode ? 'bg-[radial-gradient(circle_at_top_left,_rgba(255,221,120,0.24),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,187,45,0.18),_transparent_40%)]' : 'bg-[radial-gradient(circle_at_top_left,_rgba(240,198,109,0.18),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,187,45,0.12),_transparent_40%)]'}`} />
                     <div className={`pointer-events-none absolute inset-0 animate-[pulse_3s_ease-in-out_infinite] opacity-70 ${isDarkMode ? '[background-image:linear-gradient(110deg,transparent_0%,rgba(255,240,180,0.16)_45%,transparent_90%)]' : '[background-image:linear-gradient(110deg,transparent_0%,rgba(240,198,109,0.12)_45%,transparent_90%)]'} [background-size:220%_220%]`} />
                     <div className={`mb-4 flex items-center gap-3 ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>
                         <BookOpen size={22} />
@@ -195,16 +195,16 @@ function BibleApp({ language = 'en' }) {
                 </motion.section>
 
                 <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-                    <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className={`relative overflow-hidden rounded-[1.6rem] border ${isDarkMode ? 'border-[#f0c66d]/50 bg-[#140f09]/90' : 'border-[#d4a574]/50 bg-[#fff9f0]/90'} p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]`}>
-                        <div className={`pointer-events-none absolute inset-0 rounded-[1.6rem] border ${isDarkMode ? 'border-[#f5d681]/25' : 'border-[#e0c08a]/20'}`} />
-                        <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-40 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
+                    <motion.article initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.1, duration: 0.5 }} whileHover={{ scale: 1.02, transition: { duration: 0.3 } }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_0_60px_rgba(173,117,36,0.2)]`}>
+                        <motion.div animate={{ borderColor: isDarkMode ? ['rgba(245,214,129,0.3)', 'rgba(240,198,109,0.6)', 'rgba(245,214,129,0.3)'] : ['rgba(224,192,138,0.3)', 'rgba(212,165,116,0.5)', 'rgba(224,192,138,0.3)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
+                        <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-50 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
                         <div className={`mb-4 flex items-center gap-3 ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>
                             <Search size={18} />
                             <h2 className={`font-[Times_New_Roman,serif] text-2xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.lookupTitle}</h2>
                         </div>
                         <div className="flex flex-col gap-3 sm:flex-row">
-                            <input value={reference} onChange={(e) => setReference(e.target.value)} className={`flex-1 rounded-2xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3`} placeholder={copy.lookupPlaceholder} />
-                            <button onClick={handleLookup} className={`rounded-full border ${isDarkMode ? 'border-[#f0c66d] bg-[#b07c22] text-[#fff7df]' : 'border-[#d4a574] bg-[#d4a574] text-white'} px-4 py-3 font-semibold`}>
+                            <input value={reference} onChange={(e) => setReference(e.target.value)} className={`flex-1 rounded-3xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3 transition focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-[#f0c66d]/50' : 'focus:ring-[#d4a574]/50'}`} placeholder={copy.lookupPlaceholder} />
+                            <button onClick={handleLookup} className={`rounded-full border-2 ${isDarkMode ? 'border-[#f0c66d] bg-[#b07c22] text-[#fff7df] hover:bg-[#c99033]' : 'border-[#d4a574] bg-[#d4a574] text-white hover:bg-[#e0b88a]'} px-6 py-3 font-semibold transition`}>
                                 {loading ? 'Loading...' : copy.lookupButton}
                             </button>
                         </div>
@@ -222,20 +222,20 @@ function BibleApp({ language = 'en' }) {
                         </div>
                     </motion.article>
 
-                    <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className={`relative overflow-hidden rounded-[1.6rem] border ${isDarkMode ? 'border-[#f0c66d]/50 bg-[#140f09]/90' : 'border-[#d4a574]/50 bg-[#fff9f0]/90'} p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]`}>
-                        <div className={`pointer-events-none absolute inset-0 rounded-[1.6rem] border ${isDarkMode ? 'border-[#f5d681]/25' : 'border-[#e0c08a]/20'}`} />
-                        <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-40 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
+                    <motion.article initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.2, duration: 0.5 }} whileHover={{ scale: 1.02, transition: { duration: 0.3 } }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_0_60px_rgba(173,117,36,0.2)]`}>
+                        <motion.div animate={{ borderColor: isDarkMode ? ['rgba(245,214,129,0.3)', 'rgba(240,198,109,0.6)', 'rgba(245,214,129,0.3)'] : ['rgba(224,192,138,0.3)', 'rgba(212,165,116,0.5)', 'rgba(224,192,138,0.3)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
+                        <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-50 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
                         <div className={`mb-4 flex items-center gap-3 ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>
                             <Sparkles size={18} />
                             <h2 className={`font-[Times_New_Roman,serif] text-2xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.chapterTitle}</h2>
                         </div>
                         <div className="flex flex-col gap-3 sm:flex-row">
-                            <select value={selectedBook} onChange={(e) => setSelectedBook(e.target.value)} className={`rounded-2xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3`}>
+                            <select value={selectedBook} onChange={(e) => setSelectedBook(e.target.value)} className={`rounded-3xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3 transition cursor-pointer focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-[#f0c66d]/50' : 'focus:ring-[#d4a574]/50'}`}>
                                 {initialBooks.map((book) => (
                                     <option key={book.id} value={book.bookName.en}>{book.bookName.en}</option>
                                 ))}
                             </select>
-                            <select value={selectedChapter} onChange={(e) => setSelectedChapter(e.target.value)} className={`rounded-2xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3`}>
+                            <select value={selectedChapter} onChange={(e) => setSelectedChapter(e.target.value)} className={`rounded-3xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3 transition cursor-pointer focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-[#f0c66d]/50' : 'focus:ring-[#d4a574]/50'}`}>
                                 {chapterOptions.map((chapter) => (
                                     <option key={chapter} value={chapter}>Chapter {chapter}</option>
                                 ))}
@@ -249,8 +249,8 @@ function BibleApp({ language = 'en' }) {
                 </section>
 
                 {/* Keyword Search Section */}
-                <section className={`relative overflow-hidden rounded-[1.6rem] border ${isDarkMode ? 'border-[#f0c66d]/50 bg-[#140f09]/90' : 'border-[#d4a574]/50 bg-[#fff9f0]/90'} p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]`}>
-                    <div className={`pointer-events-none absolute inset-0 rounded-[1.6rem] border ${isDarkMode ? 'border-[#f5d681]/25' : 'border-[#e0c08a]/20'}`} />
+                <motion.section initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.3, duration: 0.5 }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_0_60px_rgba(173,117,36,0.2)]`}>
+                    <motion.div animate={{ borderColor: isDarkMode ? ['rgba(245,214,129,0.3)', 'rgba(240,198,109,0.6)', 'rgba(245,214,129,0.3)'] : ['rgba(224,192,138,0.3)', 'rgba(212,165,116,0.5)', 'rgba(224,192,138,0.3)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
                     <div className="mb-4">
                         <h2 className={`font-[Times_New_Roman,serif] text-2xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.keywordSearch}</h2>
                     </div>
@@ -258,43 +258,42 @@ function BibleApp({ language = 'en' }) {
                         <input
                             value={keywordSearch}
                             onChange={(e) => setKeywordSearch(e.target.value)}
-                            className={`flex-1 rounded-2xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3`}
+                            className={`flex-1 rounded-3xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3 transition focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-[#f0c66d]/50' : 'focus:ring-[#d4a574]/50'}`}
                             placeholder={copy.keywordPlaceholder}
                         />
                         <button
                             onClick={handleKeywordSearch}
-                            className={`rounded-full border ${isDarkMode ? 'border-[#f0c66d] bg-[#b07c22] text-[#fff7df]' : 'border-[#d4a574] bg-[#d4a574] text-white'} px-4 py-3 font-semibold`}
+                            className={`rounded-full border-2 ${isDarkMode ? 'border-[#f0c66d] bg-[#b07c22] text-[#fff7df] hover:bg-[#c99033]' : 'border-[#d4a574] bg-[#d4a574] text-white hover:bg-[#e0b88a]'} px-6 py-3 font-semibold transition`}
                         >
                             {copy.lookupButton}
                         </button>
                     </div>
                     {keywordResults.length > 0 && (
-                        <div className="mt-4 space-y-3">
-                            {keywordResults.map(result => (
-                                <div key={result.id} className={`rounded-lg p-3 border ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209]' : 'border-[#e0c08a]/50 bg-[#fffcf7]'}`}>
+                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 space-y-3">
+                            {keywordResults.map((result, idx) => (
+                                <motion.div key={result.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.05 }} className={`rounded-2xl p-3 border-2 ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209]' : 'border-[#e0c08a]/50 bg-[#fffcf7]'}`}>
                                     <p className={`font-semibold ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>{result.reference}</p>
                                     <p className={`text-sm mt-1 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'} line-clamp-2`}>{result.text}</p>
-                                </div>
+                                </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
                     )}
-                </section>
-
+                </motion.section>
                 {/* Bookmarks Section */}
-                <section className={`relative overflow-hidden rounded-[1.6rem] border ${isDarkMode ? 'border-[#f0c66d]/50 bg-[#140f09]/90' : 'border-[#d4a574]/50 bg-[#fff9f0]/90'} p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]`}>
-                    <div className={`pointer-events-none absolute inset-0 rounded-[1.6rem] border ${isDarkMode ? 'border-[#f5d681]/25' : 'border-[#e0c08a]/20'}`} />
+                <motion.section initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.4, duration: 0.5 }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_0_60px_rgba(173,117,36,0.2)]`}>
+                    <motion.div animate={{ borderColor: isDarkMode ? ['rgba(245,214,129,0.3)', 'rgba(240,198,109,0.6)', 'rgba(245,214,129,0.3)'] : ['rgba(224,192,138,0.3)', 'rgba(212,165,116,0.5)', 'rgba(224,192,138,0.3)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
                     <h2 className={`font-[Times_New_Roman,serif] text-2xl mb-4 ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.bookmarks}</h2>
                     {bookmarks.length === 0 ? (
                         <p className={`text-center py-8 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{copy.noBookmarks}</p>
                     ) : (
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            {bookmarks.map(mark => (
-                                <div key={mark.id} className={`rounded-lg p-4 border ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209]' : 'border-[#e0c08a]/50 bg-[#fffcf7]'}`}>
+                            {bookmarks.map((mark, idx) => (
+                                <motion.div key={mark.id} initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ delay: idx * 0.05 }} whileHover={{ scale: 1.05, transition: { duration: 0.2 } }} className={`rounded-2xl p-4 border-2 ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209]' : 'border-[#e0c08a]/50 bg-[#fffcf7]'}`}>
                                     <div className="flex items-start justify-between mb-2">
                                         <p className={`font-semibold ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>{mark.reference}</p>
                                         <button
                                             onClick={() => removeBookmark(mark.id)}
-                                            className={`text-xs p-1 rounded ${isDarkMode ? 'hover:bg-[#6c4320]/50 text-[#d8c39b]' : 'hover:bg-[#d4a574]/20 text-[#6b4d32]'}`}
+                                            className={`text-xs p-1 rounded-lg ${isDarkMode ? 'hover:bg-[#6c4320]/50 text-[#d8c39b] hover:text-[#f0c66d]' : 'hover:bg-[#d4a574]/20 text-[#6b4d32] hover:text-[#b07c22]'} transition`}
                                         >
                                             <Trash2 size={14} />
                                         </button>
@@ -302,45 +301,46 @@ function BibleApp({ language = 'en' }) {
                                     <p className={`text-sm mb-3 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'} line-clamp-3`}>{mark.text}</p>
                                     <button
                                         onClick={() => copyToClipboard(`${mark.reference}\n\n${mark.text}`, mark.id)}
-                                        className={`text-xs px-2 py-1 rounded flex items-center gap-1 ${isDarkMode ? 'bg-[#b07c22]/20 text-[#f0c66d] hover:bg-[#b07c22]/40' : 'bg-[#d4a574]/20 text-[#b07c22] hover:bg-[#d4a574]/40'}`}
+                                        className={`text-xs px-2 py-1 rounded-lg flex items-center gap-1 transition ${isDarkMode ? 'bg-[#b07c22]/20 text-[#f0c66d] hover:bg-[#b07c22]/40' : 'bg-[#d4a574]/20 text-[#b07c22] hover:bg-[#d4a574]/40'}`}
                                     >
                                         {copied === mark.id ? <Check size={12} /> : <Copy size={12} />}
                                         {copied === mark.id ? 'Copied!' : copy.copyVerse}
                                     </button>
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     )}
-                </section>
-
+                </motion.section>
                 {/* Books Section */}
-                <section className={`relative overflow-hidden rounded-[1.6rem] border ${isDarkMode ? 'border-[#f0c66d]/50 bg-[#140f09]/90' : 'border-[#d4a574]/50 bg-[#fff9f0]/90'} p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]`}>
-                    <div className={`pointer-events-none absolute inset-0 rounded-[1.6rem] border ${isDarkMode ? 'border-[#f5d681]/25' : 'border-[#e0c08a]/20'}`} />
+                <motion.section initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.5, duration: 0.5 }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_0_60px_rgba(173,117,36,0.2)]`}>
+                    <motion.div animate={{ borderColor: isDarkMode ? ['rgba(245,214,129,0.3)', 'rgba(240,198,109,0.6)', 'rgba(245,214,129,0.3)'] : ['rgba(224,192,138,0.3)', 'rgba(212,165,116,0.5)', 'rgba(224,192,138,0.3)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
                     <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-35 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
                     <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                         <div>
                             <h2 className={`font-[Times_New_Roman,serif] text-2xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.booksTitle}</h2>
                             <p className={`mt-2 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{copy.booksIntro}</p>
                         </div>
-                        <div className={`flex items-center gap-2 rounded-2xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07]' : 'border-[#d4a574]/50 bg-[#fffcf7]'} px-3 py-2`}>
+                        <div className={`flex items-center gap-2 rounded-3xl border-2 ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07]' : 'border-[#d4a574]/50 bg-[#fffcf7]'} px-3 py-2`}>
                             <Search size={16} className={isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'} />
                             <input value={search} onChange={(e) => setSearch(e.target.value)} className={`w-full bg-transparent text-sm outline-none sm:w-56 ${isDarkMode ? 'text-[#fff7df]' : 'text-[#4a2c15]'}`} placeholder={copy.chapterPlaceholder} />
                         </div>
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {filteredBooks.map((book) => (
-                            <Link key={book.id} to={`/books/${book.id}`} className={`rounded-[1.2rem] border ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209] hover:border-[#f0c66d]' : 'border-[#e0c08a]/50 bg-[#fffcf7] hover:border-[#d4a574]'} p-4 transition hover:translate-y-[-2px]`}>
-                                <div className="mb-3 flex items-center justify-between">
-                                    <span className={`rounded-full border ${isDarkMode ? 'border-[#d6a84f]/40 bg-[#24130a] text-[#f0c66d]' : 'border-[#d4a574]/40 bg-[#fffcf7] text-[#b07c22]'} px-3 py-1 text-[10px] uppercase tracking-[0.3em]`}>{book.testament}</span>
-                                    <span className={`text-sm ${isDarkMode ? 'text-[#e0c081]' : 'text-[#b07c22]'}`}>{book.chapters} ch.</span>
-                                </div>
-                                <h3 className={`font-[Times_New_Roman,serif] text-xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{language === 'en' ? book.bookName.en : book.bookName.ta}</h3>
-                                <p className={`mt-2 text-sm ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{language === 'en' ? book.introduction.en : book.introduction.ta}</p>
-                            </Link>
+                        {filteredBooks.map((book, idx) => (
+                            <motion.div key={book.id} initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: idx * 0.04 }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}>
+                                <Link to={`/books/${book.id}`} className={`block rounded-2xl border-2 ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209] hover:border-[#f0c66d] hover:shadow-[0_0_40px_rgba(240,198,109,0.2)]' : 'border-[#e0c08a]/50 bg-[#fffcf7] hover:border-[#d4a574] hover:shadow-[0_0_40px_rgba(212,165,116,0.2)]'} p-4 transition`}>
+                                    <div className="mb-3 flex items-center justify-between">
+                                        <span className={`rounded-full border-2 ${isDarkMode ? 'border-[#d6a84f]/40 bg-[#24130a] text-[#f0c66d]' : 'border-[#d4a574]/40 bg-[#fffcf7] text-[#b07c22]'} px-3 py-1 text-[10px] uppercase tracking-[0.3em]`}>{book.testament}</span>
+                                        <span className={`text-sm ${isDarkMode ? 'text-[#e0c081]' : 'text-[#b07c22]'}`}>{book.chapters} ch.</span>
+                                    </div>
+                                    <h3 className={`font-[Times_New_Roman,serif] text-xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{language === 'en' ? book.bookName.en : book.bookName.ta}</h3>
+                                    <p className={`mt-2 text-sm ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{language === 'en' ? book.introduction.en : book.introduction.ta}</p>
+                                </Link>
+                            </motion.div>
                         ))}
                     </div>
-                </section>
+                </motion.section>
             </div>
         </div>
     )
