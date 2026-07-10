@@ -1,4 +1,5 @@
 import type { Book } from '../types'
+import { getBookCoverImage } from './imageMap'
 
 const createChapterData = (bookName: string, taName: string, chapterCount: number, imageUrl: string) =>
     Array.from({ length: chapterCount }, (_, index) => ({
@@ -74,8 +75,8 @@ const createBook = ({
     keyThemes: themes,
     importantVerses: verses,
     relatedBooks,
-    coverImage,
-    chaptersData: createChapterData(en, ta, chapters, imageUrl)
+    coverImage: getBookCoverImage(en) || coverImage,
+    chaptersData: createChapterData(en, ta, chapters, getBookCoverImage(en) || imageUrl)
 })
 
 export const initialBooks: Book[] = [

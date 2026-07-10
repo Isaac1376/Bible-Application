@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft, BookOpen, Clock3, Compass, MapPin, Sparkles, Users } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight, BookOpen, Clock3, Compass, MapPin, Sparkles, Users } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { initialBooks } from '../data/expandedBooks'
 
@@ -43,6 +43,20 @@ function BookDetail({ language }) {
                                 <div className="mb-2 flex items-center gap-2 text-[#f3d28b]"><MapPin size={16} /> {language === 'en' ? 'Location' : 'இடம்'}</div>
                                 <p className="text-[#fef3cf]">{book.locationWritten}</p>
                             </div>
+                        </div>
+                        <div className="mt-4 rounded-2xl border border-[#7c4f24]/50 bg-[#140e0a]/80 p-4">
+                            <div className="mb-3 flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-2 text-[#f3d28b]"><ArrowUpRight size={16} /> {language === 'en' ? 'Pinterest inspiration' : 'பின்டரஸ்ட் ஈர்ப்பு'}</div>
+                                <a
+                                    href={`https://www.pinterest.com/search/pins/?q=${encodeURIComponent(book.bookName[language])}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-1 rounded-full border border-[#d6a84f]/40 bg-[#24130a] px-3 py-2 text-sm text-[#fff3cf] transition hover:bg-[#2b180f]"
+                                >
+                                    {language === 'en' ? 'Search' : 'தேட'} <ArrowUpRight size={14} />
+                                </a>
+                            </div>
+                            <p className="text-sm leading-6 text-[#d8c39b]">{language === 'en' ? 'Explore Pinterest for related artwork and devotional images for this book.' : 'இந்த புத்தகத்திற்கு தொடர்புடைய கலைப்படங்கள் மற்றும் பக்தி படங்களை பின்டரஸ்ட்டில் ஆராயுங்கள்.'}</p>
                         </div>
                     </div>
                 </div>
