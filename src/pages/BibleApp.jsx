@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, BookOpen, Search, Sparkles, Bookmark, Moon, Sun, Trash2, Copy, Check } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { initialBooks } from '../data/expandedBooks'
+import { BookOpen, Search, Sparkles, Bookmark, Moon, Sun, Trash2, Copy, Check } from 'lucide-react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { useBooks } from '../context/BooksContext'
 import { lookupPassage, readChapter } from '../services/esv'
 
 const content = {
@@ -12,8 +12,8 @@ const content = {
         lookupTitle: 'Live scripture lookup',
         lookupPlaceholder: 'Try John 3:16 or Genesis 1:1',
         lookupButton: 'Lookup',
-        keywordSearch: 'Search by keyword',
-        keywordPlaceholder: 'Search for words like "love", "faith", "prayer"...',
+        keywordSearch: 'Search saved bookmarks',
+        keywordPlaceholder: 'Search your saved verses for words like "love", "faith", "prayer"...',
         chapterTitle: 'Read a full chapter',
         chapterPlaceholder: 'Search books',
         booksTitle: 'Bible books',
@@ -27,6 +27,7 @@ const content = {
         darkMode: 'Dark Mode',
         lightMode: 'Light Mode',
         removeBookmark: 'Remove',
+        saveBookmark: 'Save bookmark',
         copyVerse: 'Copy'
     },
     ta: {
@@ -35,8 +36,8 @@ const content = {
         lookupTitle: 'நேரடி வசனத் தேடல்',
         lookupPlaceholder: 'John 3:16 அல்லது Genesis 1:1 போன்றவற்றை முயற்சிக்கவும்',
         lookupButton: 'தேடு',
-        keywordSearch: 'குறிப்பை வார்த்தையால் தேடு',
-        keywordPlaceholder: '"love", "faith", "prayer" போன்ற வார்த்தைகளைத் தேடு...',
+        keywordSearch: 'சேமிக்கப்பட்ட புக்மார்க்குகளில் தேடு',
+        keywordPlaceholder: '"love", "faith", "prayer" போன்ற வார்த்தைகளை உங்கள் சேமித்த வசனங்களில் தேடுங்கள்...',
         chapterTitle: 'முழு அதிகாரம் வாசிக்கவும்',
         chapterPlaceholder: 'புத்தகங்களைத் தேடு',
         booksTitle: 'பைபிள் புத்தகங்கள்',
@@ -50,18 +51,38 @@ const content = {
         darkMode: 'இருண்ட பயன்முறை',
         lightMode: 'ஒளி பயன்முறை',
         removeBookmark: 'அகற்று',
+        saveBookmark: 'புக்மார்க் சேமி',
         copyVerse: 'நகல்'
     }
 }
 
+const decodeTamil = (text) => {
+    if (!text || !text.includes('à')) return text
+    try { return new TextDecoder().decode(Uint8Array.from(text, (char) => char.charCodeAt(0))) } catch { return text }
+}
+
 function BibleApp({ language = 'en' }) {
-    const copy = content[language]
-    const [reference, setReference] = useState(language === 'en' ? 'John 3:16' : 'யோவான் 3:16')
+    const { books } = useBooks()
+    const [searchParams] = useSearchParams()
+    const copy = language === 'ta' ? Object.fromEntries(Object.entries(content.ta).map(([key, value]) => [key, decodeTamil(value)])) : content.en
+    const [reference, setReference] = useState('John 3:16')
     const [search, setSearch] = useState('')
-    const [selectedBook, setSelectedBook] = useState(initialBooks[0].bookName.en)
-    const [selectedChapter, setSelectedChapter] = useState('1')
+    
+    const [selectedBook, setSelectedBook] = useState(() => {
+        const bookParam = searchParams.get('book')
+        if (bookParam) {
+            const found = books.find(b => b.bookName.en.toLowerCase() === bookParam.toLowerCase() || b.bookName.ta === bookParam)
+            if (found) return found.bookName.en
+        }
+        return books[0]?.bookName.en ?? 'Genesis'
+    })
+    
+    const [selectedChapter, setSelectedChapter] = useState(() => {
+        return searchParams.get('chapter') || '1'
+    })
+    
     const [result, setResult] = useState({
-        reference: language === 'en' ? 'John 3:16' : 'யோவான் 3:16',
+        reference: 'John 3:16',
         text: copy.noReference
     })
     const [chapterResult, setChapterResult] = useState({
@@ -89,9 +110,24 @@ function BibleApp({ language = 'en' }) {
 
     const filteredBooks = useMemo(() => {
         const query = search.toLowerCase().trim()
-        if (!query) return initialBooks
-        return initialBooks.filter((book) => `${book.bookName.en} ${book.bookName.ta} ${book.introduction.en} ${book.introduction.ta}`.toLowerCase().includes(query))
-    }, [search])
+        if (!query) return books
+        return books.filter((book) => `${book.bookName.en} ${book.bookName.ta} ${book.introduction.en} ${book.introduction.ta}`.toLowerCase().includes(query))
+    }, [search, books])
+
+    // Sync state if search params change (e.g. clicking different chapters)
+    useEffect(() => {
+        const bookParam = searchParams.get('book')
+        const chapterParam = searchParams.get('chapter')
+        if (bookParam) {
+            const found = books.find(b => b.bookName.en.toLowerCase() === bookParam.toLowerCase() || b.bookName.ta === bookParam)
+            if (found) {
+                setSelectedBook(found.bookName.en)
+            }
+        }
+        if (chapterParam) {
+            setSelectedChapter(chapterParam)
+        }
+    }, [searchParams, books])
 
     // Save bookmarks to localStorage
     useEffect(() => {
@@ -103,14 +139,14 @@ function BibleApp({ language = 'en' }) {
         localStorage.setItem('bibleDarkMode', isDarkMode.toString())
     }, [isDarkMode])
 
-    const activeBook = initialBooks.find((book) => book.bookName.en === selectedBook) || initialBooks[0]
+    const activeBook = books.find((book) => book.bookName.en === selectedBook) || books[0]
     const chapterOptions = Array.from({ length: activeBook.chapters }, (_, index) => String(index + 1))
 
     useEffect(() => {
         const loadChapter = async () => {
             setChapterLoading(true)
             try {
-                const passage = await readChapter(activeBook.bookName.en, selectedChapter)
+                const passage = await readChapter(activeBook.bookName.en, selectedChapter, language)
                 setChapterResult(passage)
             } catch {
                 setChapterResult({
@@ -123,13 +159,13 @@ function BibleApp({ language = 'en' }) {
         }
 
         void loadChapter()
-    }, [activeBook.bookName.en, selectedChapter])
+    }, [activeBook.bookName.en, selectedChapter, copy.chapterError, language])
 
     const handleLookup = async () => {
         if (!reference.trim()) return
         setLoading(true)
         try {
-            const passage = await lookupPassage(reference)
+            const passage = await lookupPassage(reference, language)
             setResult(passage)
         } catch {
             setResult({
@@ -170,12 +206,12 @@ function BibleApp({ language = 'en' }) {
     }
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`min-h-screen ${isDarkMode ? 'bg-[#0a0605] text-white' : 'bg-[#f5f1e8] text-[#1a0f0a]'}`}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`mx-auto max-w-7xl min-h-screen ${isDarkMode ? 'bg-[#0a0605] text-white' : 'bg-[#f5f1e8] text-[#1a0f0a]'}`}>
             <div className="relative">
                 {/* Background frame with curved edges */}
                 <motion.div animate={{ borderColor: isDarkMode ? ['rgba(240,198,109,0.2)', 'rgba(255,240,180,0.4)', 'rgba(240,198,109,0.2)'] : ['rgba(212,165,116,0.2)', 'rgba(240,198,109,0.3)', 'rgba(212,165,116,0.2)'] }} transition={{ duration: 4, repeat: Infinity }} className={`absolute inset-0 rounded-3xl border-2 m-4 pointer-events-none ${isDarkMode ? 'border-[#f0c66d]/30' : 'border-[#d4a574]/30'}`} />
 
-                <div className="relative space-y-8 p-4">
+                <div className="relative space-y-5 p-3 sm:space-y-8 sm:p-6 lg:p-8">
                     {/* Dark Mode Toggle */}
                     <div className="flex justify-end">
                         <button
@@ -219,7 +255,7 @@ function BibleApp({ language = 'en' }) {
                                         onClick={addBookmark}
                                         className={`rounded-lg px-3 py-1 text-xs font-semibold flex items-center gap-2 transition ${isDarkMode ? 'bg-[#b07c22]/20 text-[#f0c66d] hover:bg-[#b07c22]/40' : 'bg-[#d4a574]/20 text-[#b07c22] hover:bg-[#d4a574]/40'}`}
                                     >
-                                        <Bookmark size={14} /> {copy.copyVerse}
+                                        <Bookmark size={14} /> {copy.saveBookmark}
                                     </button>
                                 </div>
                                 <p className="whitespace-pre-wrap">{result.text}</p>
@@ -235,13 +271,13 @@ function BibleApp({ language = 'en' }) {
                             </div>
                             <div className="flex flex-col gap-3 sm:flex-row">
                                 <select value={selectedBook} onChange={(e) => setSelectedBook(e.target.value)} className={`rounded-3xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3 transition cursor-pointer focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-[#f0c66d]/50' : 'focus:ring-[#d4a574]/50'}`}>
-                                    {initialBooks.map((book) => (
-                                        <option key={book.id} value={book.bookName.en}>{book.bookName.en}</option>
+                                    {books.map((book) => (
+                                        <option key={book.id} value={book.bookName.en}>{language === 'ta' ? decodeTamil(book.bookName.ta) : book.bookName.en}</option>
                                     ))}
                                 </select>
                                 <select value={selectedChapter} onChange={(e) => setSelectedChapter(e.target.value)} className={`rounded-3xl border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07] text-[#fff7df]' : 'border-[#d4a574]/50 bg-[#fffcf7] text-[#4a2c15]'} px-4 py-3 transition cursor-pointer focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-[#f0c66d]/50' : 'focus:ring-[#d4a574]/50'}`}>
                                     {chapterOptions.map((chapter) => (
-                                        <option key={chapter} value={chapter}>Chapter {chapter}</option>
+                                        <option key={chapter} value={chapter}>{language === 'ta' ? `அதிகாரம் ${chapter}` : `Chapter ${chapter}`}</option>
                                     ))}
                                 </select>
                             </div>

@@ -2,21 +2,38 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Lock, Mail, ShieldCheck } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
-function AdminLogin({ language, onAdminLogin }) {
+function AdminLogin({ language }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const navigate = useNavigate()
+    const { login } = useAuth()
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        if (email === 'mosay@1376' && password === '311706744@1376') {
-            onAdminLogin(true)
+        const result = login(email.trim(), password)
+
+        if (result.ok) {
             navigate('/admin')
-        } else {
-            setError(language === 'en' ? 'Invalid credentials. Please try again.' : ' தவறான சான்றுகள். தயவுசெய்து மீண்டும் முயற்சிக்கவும்.')
+            return
         }
+
+        if (result.error === 'missing-config') {
+            setError(
+                language === 'en'
+                    ? 'Admin login is not configured. Set VITE_ADMIN_EMAIL and VITE_ADMIN_PASSWORD in your .env file.'
+                    : 'நிர்வாக உள்நுழைவு கட்டமைக்கப்படவில்லை. உங்கள் .env கோப்பில் VITE_ADMIN_EMAIL மற்றும் VITE_ADMIN_PASSWORD-ஐ அமைக்கவும்.'
+            )
+            return
+        }
+
+        setError(
+            language === 'en'
+                ? 'Invalid credentials. Please try again.'
+                : 'தவறான சான்றுகள். தயவுசெய்து மீண்டும் முயற்சிக்கவும்.'
+        )
     }
 
     return (
@@ -37,7 +54,7 @@ function AdminLogin({ language, onAdminLogin }) {
                     </label>
                     <label className="block">
                         <span className="mb-2 flex items-center gap-2 text-sm text-[#e2c37e]"><Lock size={15} /> {language === 'en' ? 'Password' : 'கடவுச்சொல்'}</span>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-2xl border border-[#7f5128]/50 bg-[#120c07] px-4 py-3 text-[#fff7df] outline-none ring-0" placeholder="admin123" />
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-2xl border border-[#7f5128]/50 bg-[#120c07] px-4 py-3 text-[#fff7df] outline-none ring-0" placeholder="••••••••" />
                     </label>
                     {error ? <p className="text-sm text-[#ffb785]">{error}</p> : null}
                     <button type="submit" className="w-full rounded-full border border-[#f0c66d] bg-[#b07c22] px-4 py-3 font-semibold text-[#fff7df] transition hover:scale-[1.01]">{language === 'en' ? 'Sign in' : 'உள்நுழைக'}</button>

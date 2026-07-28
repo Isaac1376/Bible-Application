@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { BookOpen, ShieldCheck, Sparkles } from 'lucide-react'
+import { BookOpen, Sparkles } from 'lucide-react'
 
 function About({ language }) {
     const copy = {

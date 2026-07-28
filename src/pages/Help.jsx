@@ -1,199 +1,79 @@
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { BookOpen, Compass, HelpCircle, Languages, ShieldCheck, Sparkles, Search } from 'lucide-react'
+import { BookOpen, Compass, Heart, HelpCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { lookupPassage } from '../services/esv'
 
 const copy = {
-    en: {
-        title: 'Help Center',
-        intro: 'Everything you need to explore the Bible Timeline Explorer with confidence, whether you are reading, studying, or managing content.',
-        sections: [
-            {
-                title: 'How to explore books',
-                text: 'Open the Books page to browse each Bible book, read introductions, and open a detailed study view for deeper context.',
-                icon: BookOpen,
-                action: 'Browse books'
-            },
-            {
-                title: 'Follow the timeline',
-                text: 'Use the Timeline page to move through Scripture in chronological order and see how the major books connect.',
-                icon: Compass,
-                action: 'Open timeline'
-            },
-            {
-                title: 'Switch languages',
-                text: 'Use the language toggle at the top of the page to move between English and Tamil instantly.',
-                icon: Languages,
-                action: 'Change language'
-            }
-        ],
-        adminTitle: 'Admin guide',
-        adminText: 'Use the admin login to create, edit, or remove Bible book entries in the dashboard. The demo login is ready for testing.',
-        adminCta: 'Open admin',
-        faqs: [
-            {
-                question: 'What does the app include?',
-                answer: 'It includes a premium home experience, a books library, detailed book pages, a chronological timeline, an about page, and an admin dashboard.'
-            },
-            {
-                question: 'Can I use the app in Tamil?',
-                answer: 'Yes. The language switch lets you move between English and Tamil throughout the site.'
-            },
-            {
-                question: 'How do I access admin features?',
-                answer: 'Visit the Admin section and sign in with the demo credentials shown on the login page.'
-            }
-        ]
-    },
-    ta: {
-        title: 'உதவி மையம்',
-        intro: 'பைபிள் காலவரிசை ஆராய்ச்சியை நீங்கள் நம்பிக்கையுடன் பயன்படுத்துவதற்குத் தேவையான அனைத்தையும் இந்தப் பக்கம் வழங்குகிறது.',
-        sections: [
-            {
-                title: 'புத்தகங்களை எவ்வாறு ஆராய்வது',
-                text: 'புத்தகங்கள் பக்கத்தில் திறந்து ஒவ்வொரு பைபிள் புத்தகத்தையும் ஆராய்ந்து, அறிமுகங்களையும் ஆழமான விவரங்களையும் படிக்கலாம்.',
-                icon: BookOpen,
-                action: 'புத்தகங்களைப் பார்க்க'
-            },
-            {
-                title: 'காலவரிசையைப் பின்பற்றுங்கள்',
-                text: 'காலவரிசை பக்கத்தில் சென்று வேதத்தின் முக்கிய புத்தகங்களை காலவரிசைப்படி இணைத்துப் பார்க்கலாம்.',
-                icon: Compass,
-                action: 'காலவரிசையைத் திற'
-            },
-            {
-                title: 'மொழியை மாற்றவும்',
-                text: 'மேலே உள்ள மொழி பொத்தானைப் பயன்படுத்தி ஆங்கிலத்திலிருந்து தமிழ் வரை உடனடியாக மாற்றலாம்.',
-                icon: Languages,
-                action: 'மொழியை மாற்று'
-            }
-        ],
-        adminTitle: 'நிர்வாக வழிகாட்டி',
-        adminText: 'நிர்வாக உள்நுழைவைப் பயன்படுத்தி புத்தகங்களை உருவாக்க, மாற்ற அல்லது நீக்கலாம். டெமோ உள்நுழைவு தயார் நிலையில் உள்ளது.',
-        adminCta: 'நிர்வாகத்தைத் திற',
-        faqs: [
-            {
-                question: 'இந்தப் பயன்பாடு என்னென்ன உள்ளடக்கங்களை வழங்குகிறது?',
-                answer: 'இது பிரீமியம் முகப்புப் பக்கம், புத்தகத் தொகுப்பு, விரிவான புத்தகப் பக்கங்கள், காலவரிசை, பற்றி பக்கம் மற்றும் நிர்வாக டாஷ்போர்டு ஆகியவற்றைக் கொண்டுள்ளது.'
-            },
-            {
-                question: 'தமிழிலும் பயன்படுத்த முடியுமா?',
-                answer: 'ஆம். மொழி மாற்றும் பொத்தான் மூலம் ஆங்கிலத்திலிருந்து தமிழுக்கும் உடனடியாக மாறலாம்.'
-            },
-            {
-                question: 'நிர்வாக அம்சங்களை எப்படிச் செல்வது?',
-                answer: 'நிர்வாகப் பகுதியை திறந்து, உள்நுழைவு பக்கத்தில் காட்டப்படும் டெமோ விவரங்களுடன் உள்நுழையுங்கள்.'
-            }
-        ]
-    }
+  en: {
+    title: 'A guide for reading the Bible',
+    intro: 'Use this guide to understand how each biblical book fits within the larger story of Scripture.',
+    sections: [
+      { title: 'Choose a book', text: 'Start with the Books page for a concise introduction, historical setting, themes, and key passages for each biblical book.', icon: BookOpen, to: '/books', action: 'Browse books' },
+      { title: 'Follow the story', text: 'Use the timeline to see how the Bible moves from creation and covenant to Christ, the church, and new creation.', icon: Compass, to: '/timeline', action: 'Open timeline' },
+      { title: 'Read prayerfully', text: 'Read passages in context, notice repeated words and themes, and take time to reflect on what the text reveals about God and faithful living.', icon: Heart, to: '/bible-app', action: 'Open Bible reader' }
+    ],
+    faqTitle: 'Common questions',
+    questions: [
+      { question: 'Where should I start?', answer: 'Genesis, Luke, John, Psalms, and Acts are good starting points. Choose one book and read it in sequence rather than jumping randomly between verses.' },
+      { question: 'How should I use the timeline?', answer: 'Read the short overview of each era, then open the related books to see their setting and major themes. It is a guide to the story, not a replacement for reading Scripture itself.' },
+      { question: 'Which translation does the reader use?', answer: 'The Bible reader requests passages from its configured Bible service. Availability and wording depend on that service and the reference you enter. Use English book names for lookups (for example, John 3:16).' },
+      { question: 'Why are some theme labels in English on Tamil pages?', answer: 'Book theme tags are stored in English in the current dataset. All book descriptions, introductions, and UI text are available in Tamil.' }
+    ]
+  },
+  ta: {
+    title: 'வேதாகம வாசிப்பு வழிகாட்டி',
+    intro: 'வேதாகமத்தின் ஒவ்வொரு புத்தகமும் பெரிய கதையில் எவ்வாறு இணைகிறது என்பதை அறிய இந்த வழிகாட்டியைப் பயன்படுத்துங்கள்.',
+    sections: [
+      { title: 'ஒரு புத்தகத்தைத் தேர்ந்தெடுக்கவும்', text: 'ஒவ்வொரு வேதாகமப் புத்தகத்திற்கும் சுருக்கமான அறிமுகம், வரலாற்றுச் சூழல், கருப்பொருள்கள் மற்றும் முக்கிய வசனங்களுக்கு Books பக்கத்தில் தொடங்குங்கள்.', icon: BookOpen, to: '/books', action: 'புத்தகங்களை உலாவு' },
+      { title: 'கதையைப் பின்தொடருங்கள்', text: 'சிருஷ்டிப்பு மற்றும் உடன்படிக்கையிலிருந்து கிறிஸ்து, திருச்சபை மற்றும் புதிய சிருஷ்டிப்பு வரை வேதாகமம் எவ்வாறு நகர்கிறது என்பதைக் காலவரிசையில் காணுங்கள்.', icon: Compass, to: '/timeline', action: 'காலவரிசையைத் திற' },
+      { title: 'ஜெபத்துடன் வாசிக்கவும்', text: 'வசனங்களை சூழலில் வாசித்து, மீண்டும் மீண்டும் வரும் வார்த்தைகள் மற்றும் கருப்பொருள்களைக் கவனியுங்கள்; உரை இறைவனையும் விசுவாச வாழ்வையும் எவ்வாறு வெளிப்படுத்துகிறது என்பதை சிந்திக்க நேரம் ஒதுக்குங்கள்.', icon: Heart, to: '/bible-app', action: 'பைபிள் ரீடரைத் திற' }
+    ],
+    faqTitle: 'அடிக்கடி கேட்கப்படும் கேள்விகள்',
+    questions: [
+      { question: 'எங்கிருந்து தொடங்க வேண்டும்?', answer: 'ஆதியாகமம், லூக்கா, யோவான், சங்கீதம் மற்றும் அப்போஸ்தலர் நல்ல தொடக்கப் புள்ளிகள். ஒரு புத்தகத்தைத் தேர்ந்தெடுத்து வரிசையாக வாசிக்கவும்; வசனங்களுக்கிடையே தேர்ந்தெடுக்காமல் மாறாதீர்கள்.' },
+      { question: 'காலவரிசையை எவ்வாறு பயன்படுத்துவது?', answer: 'ஒவ்வொரு காலத்தின் சுருக்கமான கண்ணோட்டத்தை வாசித்து, தொடர்புடைய புத்தகங்களைத் திறந்து அவற்றின் சூழல் மற்றும் முக்கிய கருப்பொருள்களைப் பாருங்கள். இது கதைக்கான வழிகாட்டி; வேதாகமத்தை வாசிப்பதற்கான மாற்று அல்ல.' },
+      { question: 'ரீடர் எந்த மொழிபெயர்ப்பைப் பயன்படுத்துகிறது?', answer: 'பைபிள் ரீடர் கட்டமைக்கப்பட்ட பைபிள் சேவையிலிருந்து வசனங்களைக் கோருகிறது. முடிவுகள் அந்தச் சேவையையும் நீங்கள் உள்ளிடும் குறிப்பையும் பொறுத்தது. தேடலுக்கு ஆங்கிலப் புத்தகப் பெயர்களைப் பயன்படுத்துங்கள் (எ.கா. John 3:16).' },
+      { question: 'தமிழ் பக்கங்களில் சில கருப்பொருள் குறிச்சொற்கள் ஆங்கிலத்தில் ஏன்?', answer: 'புத்தகக் கருப்பொருள் குறிச்சொற்கள் தற்போதைய தரவுத்தொகுப்பில் ஆங்கிலத்தில் சேமிக்கப்பட்டுள்ளன. புத்தக விளக்கங்கள், அறிமுகங்கள் மற்றும் UI உரை அனைத்தும் தமிழில் கிடைக்கின்றன.' }
+    ]
+  }
 }
 
 function Help({ language }) {
-    const content = copy[language]
-    const [verseQuery, setVerseQuery] = useState('John 3:16')
-    const [verseResult, setVerseResult] = useState({
-        reference: 'John 3:16',
-        text: 'Use the lookup to search a verse, passage, or reference with the ESV-style Bible API flow.'
-    })
-    const [loading, setLoading] = useState(false)
+  const content = copy[language]
 
-    const handleVerseLookup = async () => {
-        if (!verseQuery.trim()) return
-        setLoading(true)
-        try {
-            const result = await lookupPassage(verseQuery)
-            setVerseResult(result)
-        } catch {
-            setVerseResult({
-                reference: verseQuery.trim(),
-                text: language === 'en' ? 'The lookup could not be completed right now. Please try another reference.' : 'இந்த வாசகத் தேடல் இப்போது முடிக்கப்படவில்லை. மற்ற குறிப்பு முயற்சிக்கவும்.'
-            })
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    return (
-        <div className="space-y-8">
-            <motion.section initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="rounded-[2rem] border border-[#9b6a2a]/40 bg-[#180e08]/90 p-8 shadow-[0_0_70px_rgba(179,125,40,0.16)] sm:p-10">
-                <div className="mb-4 flex items-center gap-3 text-[#f0c66d]">
-                    <HelpCircle size={22} />
-                    <h1 className="font-[Times_New_Roman,serif] text-3xl text-[#fff2c8] sm:text-4xl">{content.title}</h1>
-                </div>
-                <p className="max-w-3xl text-lg leading-8 text-[#d8c39b]">{content.intro}</p>
-            </motion.section>
-
-            <section className="grid gap-6 lg:grid-cols-3">
-                {content.sections.map((item, index) => {
-                    const Icon = item.icon
-                    return (
-                        <motion.article key={item.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.08 }} className="rounded-[1.5rem] border border-[#7f5128]/40 bg-[#140f09]/90 p-6 shadow-[0_0_32px_rgba(173,117,36,0.14)]">
-                            <div className="mb-4 flex items-center gap-3 text-[#f3d28b]"><Icon size={18} /><h2 className="font-[Times_New_Roman,serif] text-2xl text-[#ffeec5]">{item.title}</h2></div>
-                            <p className="mb-5 leading-8 text-[#d8c39b]">{item.text}</p>
-                            <Link to={item.title === 'How to explore books' || item.title === 'புத்தகங்களை எவ்வாறு ஆராய்வது' ? '/books' : item.title === 'Follow the timeline' || item.title === 'காலவரிசையைப் பின்பற்றுங்கள்' ? '/timeline' : '/'} className="inline-flex items-center gap-2 text-sm font-semibold text-[#ffd36b] hover:text-[#fff3c4]">
-                                {item.action} <Sparkles size={15} />
-                            </Link>
-                        </motion.article>
-                    )
-                })}
-            </section>
-
-            <section className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-                <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-[1.6rem] border border-[#8d5623]/40 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
-                    <div className="mb-4 flex items-center gap-3 text-[#f0c66d]"><Search size={18} /><h2 className="font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{language === 'en' ? 'Verse lookup' : 'வசனத் தேடல்'}</h2></div>
-                    <div className="flex flex-col gap-3 sm:flex-row">
-                        <input value={verseQuery} onChange={(e) => setVerseQuery(e.target.value)} className="flex-1 rounded-2xl border border-[#7f5128]/50 bg-[#120c07] px-4 py-3 text-[#fff7df]" placeholder={language === 'en' ? 'Try John 3:16 or Genesis 1:1' : 'John 3:16 அல்லது Genesis 1:1 முயற்சிக்கவும்'} />
-                        <button onClick={handleVerseLookup} className="rounded-full border border-[#f0c66d] bg-[#b07c22] px-4 py-3 font-semibold text-[#fff7df]">{loading ? (language === 'en' ? 'Loading...' : 'ஏற்றப்படுகிறது...') : (language === 'en' ? 'Lookup' : 'தேடு')}</button>
-                    </div>
-                    <div className="mt-4 rounded-[1.1rem] border border-[#6c4320]/50 bg-[#1b1209] p-4 text-sm leading-7 text-[#d8c39b]">
-                        <p className="mb-2 font-semibold uppercase tracking-[0.2em] text-[#f0c66d]">{verseResult.reference}</p>
-                        <p className="whitespace-pre-wrap">{verseResult.text}</p>
-                    </div>
-                </motion.article>
-
-                <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="rounded-[1.6rem] border border-[#8d5623]/40 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
-                    <div className="mb-4 flex items-center gap-3 text-[#f0c66d]"><Sparkles size={18} /><h2 className="font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{language === 'en' ? 'Bible image resources' : 'பைபிள் படம் வளங்கள்'}</h2></div>
-                    <div className="space-y-4 text-sm leading-7 text-[#d8c39b]">
-                        <div className="rounded-[1.1rem] border border-[#6c4320]/50 bg-[#1b1209] p-4">
-                            <p className="font-semibold text-[#ffe5ae]">{language === 'en' ? 'AI tools to try' : 'சோதிக்க வேண்டிய AI கருவிகள்'}</p>
-                            <p className="mt-2">DALL·E, Stable Diffusion, Midjourney</p>
-                        </div>
-                        <div className="rounded-[1.1rem] border border-[#6c4320]/50 bg-[#1b1209] p-4">
-                            <p className="font-semibold text-[#ffe5ae]">{language === 'en' ? 'Suggested timeline prompts' : 'காலவரிசை கருப்பொருள் தூண்டுதல்கள்'}</p>
-                            <p className="mt-2">Creation scene • Noah’s Ark • Abraham journey • Moses crossing Red Sea • Jesus ministry</p>
-                        </div>
-                        <div className="rounded-[1.1rem] border border-[#6c4320]/50 bg-[#1b1209] p-4">
-                            <p className="font-semibold text-[#ffe5ae]">{language === 'en' ? 'Tip' : 'உதவிக்குறிப்பு'}</p>
-                            <p className="mt-2">{language === 'en' ? 'Use these prompts with your preferred image generator to build richer visuals for the timeline.' : 'காலவரிசைக்கு அதிகமான காட்சிகளை உருவாக்க உங்கள் விருப்பமான படம் உருவாக்கும் கருவியில் இவற்றைப் பயன்படுத்தவும்.'}</p>
-                        </div>
-                    </div>
-                </motion.article>
-            </section>
-
-            <section className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-                <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-[1.6rem] border border-[#8d5623]/40 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
-                    <div className="mb-4 flex items-center gap-3 text-[#f0c66d]"><ShieldCheck size={18} /><h2 className="font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{content.adminTitle}</h2></div>
-                    <p className="leading-8 text-[#d8c39b]">{content.adminText}</p>
-                    <Link to="/admin/login" className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#f0c66d] bg-[#b07c22] px-4 py-3 font-semibold text-[#fff7df] transition hover:scale-[1.01]">
-                        {content.adminCta} <Sparkles size={16} />
-                    </Link>
-                </motion.article>
-
-                <motion.article initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="rounded-[1.6rem] border border-[#8d5623]/40 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
-                    <h2 className="mb-4 font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">FAQ</h2>
-                    <div className="space-y-4">
-                        {content.faqs.map((faq) => (
-                            <div key={faq.question} className="rounded-[1.1rem] border border-[#6c4320]/50 bg-[#1b1209] p-4">
-                                <p className="font-semibold text-[#ffe5ae]">{faq.question}</p>
-                                <p className="mt-2 text-sm leading-7 text-[#d8c39b]">{faq.answer}</p>
-                            </div>
-                        ))}
-                    </div>
-                </motion.article>
-            </section>
+  return (
+    <div className="space-y-8">
+      <motion.section initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="rounded-[2rem] border border-[#9b6a2a]/40 bg-[#180e08]/90 p-8 shadow-[0_0_70px_rgba(179,125,40,0.16)] sm:p-10">
+        <div className="mb-4 flex items-center gap-3 text-[#f0c66d]">
+          <HelpCircle size={22} />
+          <h1 className="font-[Times_New_Roman,serif] text-3xl text-[#fff2c8] sm:text-4xl">{content.title}</h1>
         </div>
-    )
+        <p className="max-w-3xl text-lg leading-8 text-[#d8c39b]">{content.intro}</p>
+      </motion.section>
+      <section className="grid gap-6 lg:grid-cols-3">
+        {content.sections.map((item, index) => {
+          const Icon = item.icon
+          return (
+            <motion.article key={item.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.08 }} className="rounded-[1.5rem] border border-[#7f5128]/40 bg-[#140f09]/90 p-6 shadow-[0_0_32px_rgba(173,117,36,0.14)]">
+              <div className="mb-4 flex items-center gap-3 text-[#f3d28b]"><Icon size={18} /><h2 className="font-[Times_New_Roman,serif] text-2xl text-[#ffeec5]">{item.title}</h2></div>
+              <p className="mb-5 leading-8 text-[#d8c39b]">{item.text}</p>
+              <Link to={item.to} className="text-sm font-semibold text-[#ffd36b] hover:text-[#fff3c4]">{item.action} →</Link>
+            </motion.article>
+          )
+        })}
+      </section>
+      <section className="rounded-[1.6rem] border border-[#8d5623]/40 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
+        <h2 className="mb-4 font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{content.faqTitle}</h2>
+        <div className="space-y-4">
+          {content.questions.map((item) => (
+            <div key={item.question} className="rounded-[1.1rem] border border-[#6c4320]/50 bg-[#1b1209] p-4">
+              <p className="font-semibold text-[#ffe5ae]">{item.question}</p>
+              <p className="mt-2 text-sm leading-7 text-[#d8c39b]">{item.answer}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  )
 }
 
 export default Help

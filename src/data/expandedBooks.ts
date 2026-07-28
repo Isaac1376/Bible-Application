@@ -4,21 +4,11 @@ import { getBookCoverImage } from './imageMap'
 const createChapterData = (bookName: string, taName: string, chapterCount: number, imageUrl: string) =>
     Array.from({ length: chapterCount }, (_, index) => ({
         chapterNumber: index + 1,
-        title: {
-            en: `${bookName} ${index + 1}`,
-            ta: `${taName} ${index + 1}`
-        },
-        description: {
-            en: `Chapter ${index + 1} in ${bookName} gives readers a simple and helpful summary of the main event, the people involved, and the lesson carried by the passage. It highlights the turning point or important action that shapes the chapter’s meaning and shows how this section fits into the larger story of the book. This short reflection makes the chapter easier to understand, remember, and apply in daily study and devotion.`,
-            ta: `அதிகாரம் ${index + 1}, ${bookName} இல் இடம்பெறும் முக்கிய நிகழ்வை, சம்பந்தப்பட்ட மக்களை மற்றும் அந்தப் பகுதியின் பாடத்தைக் குறித்த எளிய மற்றும் பயனுள்ள சுருக்கத்தை வாசகர்களுக்கு அளிக்கிறது. இந்த அதிகாரத்தின் அர்த்தத்தை வடிவமைக்கும் முக்கிய மாற்றம் அல்லது செயலைக் காட்டி, புத்தகத்தின் பெரிய கதையுடன் இது எவ்வாறு இணைகிறது என்பதையும் இது தெளிவாக்குகிறது. இந்தச் சுருக்கம் அதிகாரத்தை புரிந்துகொள்ளவும், நினைவில் கொள்ளவும், தினசரி ஆய்விலும் பக்தியிலும் பயன்படுத்தவும் எளிதாக்குகிறது.`
-        },
-        explanation: {
-            en: `This chapter contributes to the broader themes of ${bookName} and deepens the spiritual message of the book by showing how the people of God respond, learn, and grow through the events described here.`,
-            ta: `இந்த அதிகாரம் ${bookName} இன் பரந்த கருப்பொருள்களுக்கு பங்களிக்கிறது. இங்கு விவரிக்கப்பட்ட நிகழ்வுகள் மூலம் இறைவனின் மக்களது மறுமொழி, கற்றல் மற்றும் வளர்ச்சி எவ்வாறு அமைந்துள்ளது என்பதையும் காட்டி புத்தகத்தின் ஆன்மீக செய்தியை ஆழமாக்குகிறது.`
-        },
+        title: { en: `${bookName} ${index + 1}`, ta: `${taName} ${index + 1}` },
+        description: { en: '', ta: '' },
+        explanation: { en: '', ta: '' },
         images: [imageUrl]
     }))
-
 const createBook = ({
     id,
     en,
@@ -244,7 +234,9 @@ export const initialBooks: Book[] = [
         dateWritten: 'c. 1000-970 BC',
         locationWritten: 'Bethlehem / Moab',
         chapters: 4,
-        introEn: 'Ruth tells a story of loyalty, grace, and divine provision in the midst of hardship.',
+        introEn: `Ruth is a short, deeply human story that showcases loyalty, sacrificial love, and the quiet workings of God’s providence in ordinary lives. Set against the backdrop of social instability and personal loss, the narrative follows a family in crisis and highlights Ruth’s remarkable decision to remain with her mother-in-law Naomi. That choice sets in motion a chain of everyday acts—gathering grain, seeking protection, and navigating cultural boundaries—that ultimately lead to redemption, community restoration, and the inclusion of a foreign woman into Israel’s covenant story. Reading Ruth gives practical insight into how faithfulness looks in small, courageous choices rather than grand gestures. The book teaches readers about the dignity of loyalty, the importance of faithful compassion in relationships, and how God often fulfills promises through ordinary people and faithful actions.
+
+Beyond theological themes, Ruth has real-world utility: it reshapes how we think about belonging, resilience, and ethical hospitality. For individuals, Ruth models steadfast commitment during seasons of grief and transition; for communities, it underscores the value of generosity, inclusion, and social care for the vulnerable. The narrative also connects to larger biblical promises—Ruth becomes part of David’s lineage—showing how personal faithfulness can have unexpected communal and historical consequences. If you read Ruth closely, you will learn to spot everyday faithfulness, practice mercy in concrete ways, and recognize the subtle ways that providence and grace operate. Ultimately, Ruth invites readers to live out compassionate fidelity and to trust that small acts of loyal love can anchor lives and shape a future larger than ourselves.`,
         introTa: 'ரூத், சிரமத்தினிடையில் விசுவாசம், கிருபை மற்றும் இறைவனின் வழங்குதல் பற்றிய கதையைச் சொல்கிறது.',
         aboutEn: 'The book centers on Ruth’s faithful commitment and the birth of King David’s lineage.',
         aboutTa: 'இந்தப் புத்தகம் ரூத்தின் விசுவாசமான உறுதிப்பாடு மற்றும் தாவீதின் வம்சத்தின் பிறப்பை மையமாகக் கொண்டது.',
@@ -1441,8 +1433,6 @@ export const initialBooks: Book[] = [
         relatedBooks: ['2 John', '3 John', 'Revelation'],
         coverImage: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=900&q=80',
         imageUrl: 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=700&q=80',
-        introTa: '1 யோவான், இறைவனுடனும் மற்றவர்களுடனும் உடன்படிக்கையுடன் நடக்க விசுவாசிகளை கற்பிக்கிறது.',
-        aboutTa: 'இந்த நிருபம் அன்பு, சத்தியம் மற்றும் உறுதிப்பாட்டை வலியுறுத்துகிறது.',
         backgroundEn: 'John writes to encourage believers in the face of false teaching.',
         backgroundTa: 'தவறான போதனைக்கு எதிராக விசுவாசிகளை உறுதிப்படுத்த யோவான் எழுதுகிறார்.'
     }),

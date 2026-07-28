@@ -1,24 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
-import { PlusCircle, Trash2, Edit3, ShieldCheck, Upload, ImagePlus } from 'lucide-react'
-import { initialBooks } from '../data/expandedBooks'
-
-const STORAGE_KEY = 'bible-admin-books'
-
-const getStoredBooks = () => {
-    if (typeof window === 'undefined') return initialBooks
-    try {
-        const saved = window.localStorage.getItem(STORAGE_KEY)
-        return saved ? JSON.parse(saved) : initialBooks
-    } catch {
-        return initialBooks
-    }
-}
-
-const persistBooks = (books) => {
-    if (typeof window === 'undefined') return
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(books))
-}
+import { useMemo, useState } from 'react'
+import { PlusCircle, Trash2, Edit3, ShieldCheck, Upload, ImagePlus, LogOut } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
+import { useBooks } from '../context/BooksContext'
 
 const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -61,7 +44,8 @@ const buildChapterData = (bookName, taName, chapterCount, imageUrl, existingChap
     })
 
 function AdminDashboard({ language }) {
-    const [books, setBooks] = useState(getStoredBooks)
+    const { books, setBooks, resetBooks } = useBooks()
+    const { logout } = useAuth()
     const [draft, setDraft] = useState(createEmptyDraft)
     const [editingBookId, setEditingBookId] = useState(null)
     const [uploadMessage, setUploadMessage] = useState('')
@@ -71,10 +55,6 @@ function AdminDashboard({ language }) {
         old: books.filter((book) => book.testament === 'Old Testament').length,
         new: books.filter((book) => book.testament === 'New Testament').length
     }), [books])
-
-    useEffect(() => {
-        persistBooks(books)
-    }, [books])
 
     const resetDraft = () => {
         setDraft(createEmptyDraft())
@@ -169,9 +149,19 @@ function AdminDashboard({ language }) {
     return (
         <div className="space-y-8">
             <section className="rounded-[2rem] border border-[#9b6a2a]/40 bg-[#180e08]/90 p-6 shadow-[0_0_60px_rgba(179,125,40,0.16)] sm:p-8">
-                <div className="flex items-center gap-3 text-[#f0c66d]">
-                    <ShieldCheck size={20} />
-                    <h1 className="font-[Times_New_Roman,serif] text-3xl text-[#fff2c8]">{language === 'en' ? 'Admin dashboard' : 'நிர்வாக டாஷ்போர்டு'}</h1>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 text-[#f0c66d]">
+                        <ShieldCheck size={20} />
+                        <h1 className="font-[Times_New_Roman,serif] text-3xl text-[#fff2c8]">{language === 'en' ? 'Admin dashboard' : 'நிர்வாக டாஷ்போர்டு'}</h1>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        <button onClick={resetBooks} className="rounded-full border border-[#d6a84f]/40 px-4 py-2 text-sm text-[#f0c66d]">
+                            {language === 'en' ? 'Reset to defaults' : 'இயல்புநிலைக்கு மீட்டமை'}
+                        </button>
+                        <button onClick={logout} className="inline-flex items-center gap-2 rounded-full border border-[#d6a84f]/40 px-4 py-2 text-sm text-[#f0c66d]">
+                            <LogOut size={15} /> {language === 'en' ? 'Sign out' : 'வெளியேறு'}
+                        </button>
+                    </div>
                 </div>
                 <div className="mt-6 grid gap-4 md:grid-cols-3">
                     <div className="rounded-[1.3rem] border border-[#7f5128]/40 bg-[#140f09]/90 p-4"><p className="text-sm text-[#d2b36b]">{language === 'en' ? 'Books' : 'புத்தகங்கள்'}</p><p className="mt-2 text-3xl text-[#fff4d0]">{stats.total}</p></div>

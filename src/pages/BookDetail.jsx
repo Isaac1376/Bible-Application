@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowUpRight, BookOpen, Clock3, Compass, MapPin, Sparkles, Users } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
-import { initialBooks } from '../data/expandedBooks'
+import { useBooks } from '../context/BooksContext'
 
 function BookDetail({ language }) {
     const { id } = useParams()
-    const book = initialBooks.find((item) => item.id === id)
+    const { books } = useBooks()
+    const book = books.find((item) => item.id === id)
 
     if (!book) {
         return (
@@ -75,20 +76,26 @@ function BookDetail({ language }) {
             </div>
 
             <section className="rounded-[1.6rem] border border-[#8d5623]/40 bg-[#140f09]/90 p-6 shadow-[0_0_40px_rgba(173,117,36,0.14)]">
-                <h2 className="mb-5 font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{language === 'en' ? 'Chapter insights' : 'அதிகாரத் தெளிவு'}</h2>
-                <div className="space-y-4">
+                <h2 className="font-[Times_New_Roman,serif] text-2xl text-[#fff2c8]">{language === 'en' ? 'Read the chapters' : '\u0b85\u0ba4\u0bbf\u0b95\u0bbe\u0bb0\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0bb5\u0bbe\u0b9a\u0bbf\u0baf\u0bc1\u0b99\u0bcd\u0b95\u0bb3\u0bcd'}</h2>
+                <p className="mt-3 max-w-3xl leading-7 text-[#d8c39b]">{language === 'en' ? 'Open the Bible reader to load the actual Scripture text for a chapter. This page no longer shows generated chapter summaries.' : '\u0bb5\u0bc7\u0ba4\u0bbe\u0b95\u0bae \u0bb5\u0b9a\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0bb5\u0b9a\u0bbf\u0b95\u0bcd\u0b95 \u0baa\u0bc8\u0baa\u0bbf\u0bb3\u0bcd \u0bb0\u0bc0\u0b9f\u0bb0\u0bc8\u0ba4\u0bcd \u0ba4\u0bbf\u0bb1\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd.'}</p>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {book.chaptersData.map((chapter) => (
-                        <div key={chapter.chapterNumber} className="rounded-[1.2rem] border border-[#784b1e]/40 bg-[#1b1209] p-4 sm:p-5">
-                            <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                                <h3 className="font-[Times_New_Roman,serif] text-xl text-[#ffe5ae]">{language === 'en' ? `Chapter ${chapter.chapterNumber}` : `அதிகாரம் ${chapter.chapterNumber}`} · {chapter.title[language]}</h3>
-                                <span className="text-sm text-[#e0b969]">{book.bookName[language]}</span>
-                            </div>
-                            <p className="mb-3 leading-8 text-[#d7c39b]">{chapter.description[language]}</p>
-                            <p className="rounded-2xl border border-[#6c4320]/50 bg-[#120c07] p-4 text-sm leading-7 text-[#f2d79f]">{chapter.explanation[language]}</p>
-                            <div className="mt-4 flex flex-wrap gap-2">
-                                {chapter.images.map((image) => <img key={image} src={image} alt={chapter.title[language]} className="h-24 w-32 rounded-xl object-cover" />)}
-                            </div>
-                        </div>
+                        <Link
+                            key={chapter.chapterNumber}
+                            to={`/bible-app?book=${encodeURIComponent(book.bookName.en)}&chapter=${chapter.chapterNumber}`}
+                            className="group relative isolate min-h-24 overflow-hidden rounded-2xl border border-[#7c4f24]/60 bg-[#1b1209] p-4 text-sm text-[#f3d28b] transition hover:-translate-y-0.5 hover:border-[#f0c66d] hover:text-[#fff2c8]"
+                        >
+                            <img
+                                src={chapter.images?.[0] || book.coverImage}
+                                alt=""
+                                loading="lazy"
+                                className="absolute inset-0 -z-10 h-full w-full object-cover opacity-35 transition duration-500 group-hover:scale-110 group-hover:opacity-55"
+                            />
+                            <span className="absolute inset-0 -z-10 bg-gradient-to-r from-[#140e0a]/95 via-[#140e0a]/75 to-[#140e0a]/45" />
+                            <span className="inline-flex rounded-full border border-[#d6a84f]/45 bg-[#1b1209]/80 px-3 py-1.5 font-medium shadow-sm">
+                                {language === 'en' ? `Chapter ${chapter.chapterNumber}` : `\u0b85\u0ba4\u0bbf\u0b95\u0bbe\u0bb0\u0bae\u0bcd ${chapter.chapterNumber}`}
+                            </span>
+                        </Link>
                     ))}
                 </div>
             </section>
