@@ -3,6 +3,8 @@ import { ArrowLeft, ArrowUpRight, BookOpen, Clock3, Compass, MapPin, Sparkles, U
 import { Link, useParams } from 'react-router-dom'
 import { useBooks } from '../context/BooksContext'
 
+const MotionLink = motion.create(Link)
+
 function BookDetail({ language }) {
     const { id } = useParams()
     const { books } = useBooks()
@@ -80,7 +82,7 @@ function BookDetail({ language }) {
                 <p className="mt-3 max-w-3xl leading-7 text-[#d8c39b]">{language === 'en' ? 'Open the Bible reader to load the actual Scripture text for a chapter. This page no longer shows generated chapter summaries.' : '\u0bb5\u0bc7\u0ba4\u0bbe\u0b95\u0bae \u0bb5\u0b9a\u0ba9\u0b99\u0bcd\u0b95\u0bb3\u0bc8 \u0bb5\u0b9a\u0bbf\u0b95\u0bcd\u0b95 \u0baa\u0bc8\u0baa\u0bbf\u0bb3\u0bcd \u0bb0\u0bc0\u0b9f\u0bb0\u0bc8\u0ba4\u0bcd \u0ba4\u0bbf\u0bb1\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd.'}</p>
                 <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {book.chaptersData.map((chapter) => (
-                        <Link
+                        <MotionLink
                             key={chapter.chapterNumber}
                             to={`/bible-app?book=${encodeURIComponent(book.bookName.en)}&chapter=${chapter.chapterNumber}`}
                             className="group relative isolate min-h-24 overflow-hidden rounded-2xl border border-[#7c4f24]/60 bg-[#1b1209] p-4 text-sm text-[#f3d28b] transition hover:-translate-y-0.5 hover:border-[#f0c66d] hover:text-[#fff2c8]"
@@ -95,7 +97,7 @@ function BookDetail({ language }) {
                             <span className="inline-flex rounded-full border border-[#d6a84f]/45 bg-[#1b1209]/80 px-3 py-1.5 font-medium shadow-sm">
                                 {language === 'en' ? `Chapter ${chapter.chapterNumber}` : `\u0b85\u0ba4\u0bbf\u0b95\u0bbe\u0bb0\u0bae\u0bcd ${chapter.chapterNumber}`}
                             </span>
-                        </Link>
+                        </MotionLink>
                     ))}
                 </div>
             </section>

@@ -231,7 +231,7 @@ function BibleApp({ language = 'en' }) {
                             <BookOpen size={22} />
                             <h1 className={`font-[Times_New_Roman,serif] text-3xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'} sm:text-4xl`}>{copy.title}</h1>
                         </div>
-                        <p className={`max-w-3xl text-lg leading-8 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{copy.intro}</p>
+                        <p className={`max-w-3xl text-lg leading-8 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{copy.intro}</p><div className="mt-6 flex flex-wrap gap-3"><span className={`rounded-full border px-4 py-2 text-sm ${isDarkMode ? 'border-[#f0c66d]/35 bg-[#120c07]/70 text-[#f0c66d]' : 'border-[#d4a574]/50 bg-white/70 text-[#8a5a20]'}`}>66 books</span><span className={`rounded-full border px-4 py-2 text-sm ${isDarkMode ? 'border-[#f0c66d]/35 bg-[#120c07]/70 text-[#f0c66d]' : 'border-[#d4a574]/50 bg-white/70 text-[#8a5a20]'}`}>Live chapter reader</span><span className={`rounded-full border px-4 py-2 text-sm ${isDarkMode ? 'border-[#f0c66d]/35 bg-[#120c07]/70 text-[#f0c66d]' : 'border-[#d4a574]/50 bg-white/70 text-[#8a5a20]'}`}>Personal bookmarks</span></div>
                     </motion.section>
 
                     <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
@@ -369,14 +369,14 @@ function BibleApp({ language = 'en' }) {
                         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                             {filteredBooks.map((book, idx) => (
                                 <motion.div key={book.id} initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: idx * 0.04 }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}>
-                                    <Link to={`/books/${book.id}`} className={`block rounded-2xl border-2 ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209] hover:border-[#f0c66d] hover:shadow-[0_0_40px_rgba(240,198,109,0.2)]' : 'border-[#e0c08a]/50 bg-[#fffcf7] hover:border-[#d4a574] hover:shadow-[0_0_40px_rgba(212,165,116,0.2)]'} p-4 transition`}>
+                                    <Link to={`/books/${book.id}`} className={`group block overflow-hidden rounded-2xl border-2 ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209] hover:border-[#f0c66d] hover:shadow-[0_0_40px_rgba(240,198,109,0.2)]' : 'border-[#e0c08a]/50 bg-[#fffcf7] hover:border-[#d4a574] hover:shadow-[0_0_40px_rgba(212,165,116,0.2)]'} transition`}><img src={book.coverImage} alt="" loading="lazy" decoding="async" className="h-28 w-full object-cover opacity-70 transition duration-500 group-hover:scale-105 group-hover:opacity-100" /><div className="p-4">
                                         <div className="mb-3 flex items-center justify-between">
                                             <span className={`rounded-full border-2 ${isDarkMode ? 'border-[#d6a84f]/40 bg-[#24130a] text-[#f0c66d]' : 'border-[#d4a574]/40 bg-[#fffcf7] text-[#b07c22]'} px-3 py-1 text-[10px] uppercase tracking-[0.3em]`}>{book.testament}</span>
                                             <span className={`text-sm ${isDarkMode ? 'text-[#e0c081]' : 'text-[#b07c22]'}`}>{book.chapters} ch.</span>
                                         </div>
                                         <h3 className={`font-[Times_New_Roman,serif] text-xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{language === 'en' ? book.bookName.en : book.bookName.ta}</h3>
                                         <p className={`mt-2 text-sm ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{language === 'en' ? book.introduction.en : book.introduction.ta}</p>
-                                    </Link>
+                                    </div></Link>
                                 </motion.div>
                             ))}
                         </div>
