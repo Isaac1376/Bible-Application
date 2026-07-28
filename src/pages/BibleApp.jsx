@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { BookOpen, Search, Sparkles, Bookmark, Moon, Sun, Trash2, Copy, Check } from 'lucide-react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useBooks } from '../context/BooksContext'
+import { getBookCoverImage } from '../data/imageMap'
 import { lookupPassage, readChapter } from '../services/esv'
 
 const content = {
@@ -369,7 +370,7 @@ function BibleApp({ language = 'en' }) {
                         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                             {filteredBooks.map((book, idx) => (
                                 <motion.div key={book.id} initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: idx * 0.04 }} whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}>
-                                    <Link to={`/books/${book.id}`} className={`group block overflow-hidden rounded-2xl border-2 ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209] hover:border-[#f0c66d] hover:shadow-[0_0_40px_rgba(240,198,109,0.2)]' : 'border-[#e0c08a]/50 bg-[#fffcf7] hover:border-[#d4a574] hover:shadow-[0_0_40px_rgba(212,165,116,0.2)]'} transition`}><img src={book.coverImage} alt="" loading="lazy" decoding="async" className="h-28 w-full object-cover opacity-70 transition duration-500 group-hover:scale-105 group-hover:opacity-100" /><div className="p-4">
+                                    <Link to={`/books/${book.id}`} className={`group block overflow-hidden rounded-2xl border-2 ${isDarkMode ? 'border-[#6c4320]/50 bg-[#1b1209] hover:border-[#f0c66d] hover:shadow-[0_0_40px_rgba(240,198,109,0.2)]' : 'border-[#e0c08a]/50 bg-[#fffcf7] hover:border-[#d4a574] hover:shadow-[0_0_40px_rgba(212,165,116,0.2)]'} transition`}><img src={getBookCoverImage(book.bookName.en)} alt="" loading="lazy" decoding="async" className="h-28 w-full object-cover opacity-70 transition duration-500 group-hover:scale-105 group-hover:opacity-100" /><div className="p-4">
                                         <div className="mb-3 flex items-center justify-between">
                                             <span className={`rounded-full border-2 ${isDarkMode ? 'border-[#d6a84f]/40 bg-[#24130a] text-[#f0c66d]' : 'border-[#d4a574]/40 bg-[#fffcf7] text-[#b07c22]'} px-3 py-1 text-[10px] uppercase tracking-[0.3em]`}>{book.testament}</span>
                                             <span className={`text-sm ${isDarkMode ? 'text-[#e0c081]' : 'text-[#b07c22]'}`}>{book.chapters} ch.</span>

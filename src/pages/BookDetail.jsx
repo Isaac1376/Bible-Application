@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowUpRight, BookOpen, Clock3, Compass, MapPin, Sparkles, Users } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { useBooks } from '../context/BooksContext'
+import { getBookCoverImage } from '../data/imageMap'
 
 const MotionLink = motion.create(Link)
 
@@ -26,7 +27,7 @@ function BookDetail({ language }) {
 
             <section className="overflow-hidden rounded-[2rem] border border-[#9d6c2a]/40 bg-[#180e08]/90 shadow-[0_0_80px_rgba(196,132,35,0.2)]">
                 <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-                    <img src={book.coverImage} alt={book.bookName[language]} loading="lazy" className="h-full min-h-[280px] w-full object-cover sm:min-h-[320px]" />
+                    <img src={getBookCoverImage(book.bookName.en)} alt={book.bookName[language]} loading="lazy" className="h-full min-h-[280px] w-full object-cover sm:min-h-[320px]" />
                     <div className="p-8 sm:p-10">
                         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#d6a84f]/40 bg-[#24130a] px-3 py-2 text-sm text-[#f0c66d]">
                             <Sparkles size={15} /> {book.testament}
@@ -88,7 +89,7 @@ function BookDetail({ language }) {
                             className="group relative isolate min-h-24 overflow-hidden rounded-2xl border border-[#7c4f24]/60 bg-[#1b1209] p-4 text-sm text-[#f3d28b] transition hover:-translate-y-0.5 hover:border-[#f0c66d] hover:text-[#fff2c8]"
                         >
                             <img
-                                src={chapter.images?.[0] || book.coverImage}
+                                src={getBookCoverImage(book.bookName.en)}
                                 alt=""
                                 loading="lazy"
                                 className="absolute inset-0 -z-10 h-full w-full object-cover opacity-35 transition duration-500 group-hover:scale-110 group-hover:opacity-55"
