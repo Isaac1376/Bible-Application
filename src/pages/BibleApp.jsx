@@ -207,12 +207,12 @@ function BibleApp({ language = 'en' }) {
     }
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`mx-auto max-w-7xl min-h-screen ${isDarkMode ? 'bg-[#0a0605] text-white' : 'bg-[#f5f1e8] text-[#1a0f0a]'}`}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`min-h-screen w-full ${isDarkMode ? 'bg-[#0a0605] text-white' : 'bg-[#f5f1e8] text-[#1a0f0a]'}`}>
             <div className="relative">
                 {/* Background frame with curved edges */}
-                <motion.div animate={{ borderColor: isDarkMode ? ['rgba(240,198,109,0.2)', 'rgba(255,240,180,0.4)', 'rgba(240,198,109,0.2)'] : ['rgba(212,165,116,0.2)', 'rgba(240,198,109,0.3)', 'rgba(212,165,116,0.2)'] }} transition={{ duration: 4, repeat: Infinity }} className={`absolute inset-0 rounded-3xl border-2 m-4 pointer-events-none ${isDarkMode ? 'border-[#f0c66d]/30' : 'border-[#d4a574]/30'}`} />
+                <motion.div animate={{ borderColor: isDarkMode ? ['rgba(240,198,109,0.2)', 'rgba(255,240,180,0.4)', 'rgba(240,198,109,0.2)'] : ['rgba(212,165,116,0.2)', 'rgba(240,198,109,0.3)', 'rgba(212,165,116,0.2)'] }} transition={{ duration: 4, repeat: Infinity }} className={`absolute inset-0 rounded-[2rem] border m-4 pointer-events-none ${isDarkMode ? 'border-[#f0c66d]/30' : 'border-[#d4a574]/30'}`} />
 
-                <div className="relative space-y-5 p-3 sm:space-y-8 sm:p-6 lg:p-8">
+                <div className="relative mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-8 sm:py-10">
                     {/* Dark Mode Toggle */}
                     <div className="flex justify-end">
                         <button
@@ -224,8 +224,8 @@ function BibleApp({ language = 'en' }) {
                     </div>
 
                     {/* Header */}
-                    <motion.section initial={{ opacity: 0, y: 24, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6 }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/70 bg-[#180e08]/90' : 'border-[#d4a574]/70 bg-[#fff5e6]/90'} p-8 shadow-[0_0_100px_rgba(179,125,40,0.3)] sm:p-10`}>
-                        <motion.div animate={{ borderColor: isDarkMode ? ['rgba(240,198,109,0.4)', 'rgba(255,240,180,0.8)', 'rgba(240,198,109,0.4)'] : ['rgba(212,165,116,0.4)', 'rgba(240,198,109,0.6)', 'rgba(212,165,116,0.4)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f4d178]/50' : 'border-[#e0c08a]/40'}`} />
+                    <motion.section initial={{ opacity: 0, y: 24, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.6 }} className={`relative overflow-hidden rounded-[2rem] border ${isDarkMode ? 'border-[#f0c66d]/70 bg-[#180e08]/90' : 'border-[#d4a574]/70 bg-[#fff5e6]/90'} p-8 shadow-[0_24px_80px_rgba(0,0,0,0.24)] sm:p-10`}>
+                        <motion.div className={`pointer-events-none absolute inset-0 rounded-[2rem] border ${isDarkMode ? 'border-[#f4d178]/50' : 'border-[#e0c08a]/40'}`} />
                         <div className={`pointer-events-none absolute inset-0 rounded-3xl ${isDarkMode ? 'bg-[radial-gradient(circle_at_top_left,_rgba(255,221,120,0.24),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,187,45,0.18),_transparent_40%)]' : 'bg-[radial-gradient(circle_at_top_left,_rgba(240,198,109,0.18),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(255,187,45,0.12),_transparent_40%)]'}`} />
                         <div className={`pointer-events-none absolute inset-0 animate-[pulse_3s_ease-in-out_infinite] opacity-70 ${isDarkMode ? '[background-image:linear-gradient(110deg,transparent_0%,rgba(255,240,180,0.16)_45%,transparent_90%)]' : '[background-image:linear-gradient(110deg,transparent_0%,rgba(240,198,109,0.12)_45%,transparent_90%)]'} [background-size:220%_220%]`} />
                         <div className={`mb-4 flex items-center gap-3 ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>
@@ -236,8 +236,8 @@ function BibleApp({ language = 'en' }) {
                     </motion.section>
 
                     <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-                        <motion.article initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.1, duration: 0.5 }} whileHover={{ scale: 1.02, transition: { duration: 0.3 } }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_0_60px_rgba(173,117,36,0.2)]`}>
-                            <motion.div animate={{ borderColor: isDarkMode ? ['rgba(245,214,129,0.3)', 'rgba(240,198,109,0.6)', 'rgba(245,214,129,0.3)'] : ['rgba(224,192,138,0.3)', 'rgba(212,165,116,0.5)', 'rgba(224,192,138,0.3)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
+                        <motion.article initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.1, duration: 0.5 }} whileHover={{ scale: 1.02, transition: { duration: 0.3 } }} className={`relative overflow-hidden rounded-[2rem] border ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_18px_55px_rgba(0,0,0,0.18)]`}>
+                            <motion.div className={`pointer-events-none absolute inset-0 rounded-[2rem] border ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
                             <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-50 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
                             <div className={`mb-4 flex items-center gap-3 ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>
                                 <Search size={18} />
@@ -263,8 +263,8 @@ function BibleApp({ language = 'en' }) {
                             </div>
                         </motion.article>
 
-                        <motion.article initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.2, duration: 0.5 }} whileHover={{ scale: 1.02, transition: { duration: 0.3 } }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_0_60px_rgba(173,117,36,0.2)]`}>
-                            <motion.div animate={{ borderColor: isDarkMode ? ['rgba(245,214,129,0.3)', 'rgba(240,198,109,0.6)', 'rgba(245,214,129,0.3)'] : ['rgba(224,192,138,0.3)', 'rgba(212,165,116,0.5)', 'rgba(224,192,138,0.3)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
+                        <motion.article initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.2, duration: 0.5 }} whileHover={{ scale: 1.02, transition: { duration: 0.3 } }} className={`relative overflow-hidden rounded-[2rem] border ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_18px_55px_rgba(0,0,0,0.18)]`}>
+                            <motion.div className={`pointer-events-none absolute inset-0 rounded-[2rem] border ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
                             <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-50 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
                             <div className={`mb-4 flex items-center gap-3 ${isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'}`}>
                                 <Sparkles size={18} />
@@ -290,8 +290,8 @@ function BibleApp({ language = 'en' }) {
                     </section>
 
                     {/* Keyword Search Section */}
-                    <motion.section initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.3, duration: 0.5 }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_0_60px_rgba(173,117,36,0.2)]`}>
-                        <motion.div animate={{ borderColor: isDarkMode ? ['rgba(245,214,129,0.3)', 'rgba(240,198,109,0.6)', 'rgba(245,214,129,0.3)'] : ['rgba(224,192,138,0.3)', 'rgba(212,165,116,0.5)', 'rgba(224,192,138,0.3)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
+                    <motion.section initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.3, duration: 0.5 }} className={`relative overflow-hidden rounded-[2rem] border ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_18px_55px_rgba(0,0,0,0.18)]`}>
+                        <motion.div className={`pointer-events-none absolute inset-0 rounded-[2rem] border ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
                         <div className="mb-4">
                             <h2 className={`font-[Times_New_Roman,serif] text-2xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.keywordSearch}</h2>
                         </div>
@@ -321,8 +321,8 @@ function BibleApp({ language = 'en' }) {
                         )}
                     </motion.section>
                     {/* Bookmarks Section */}
-                    <motion.section initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.4, duration: 0.5 }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_0_60px_rgba(173,117,36,0.2)]`}>
-                        <motion.div animate={{ borderColor: isDarkMode ? ['rgba(245,214,129,0.3)', 'rgba(240,198,109,0.6)', 'rgba(245,214,129,0.3)'] : ['rgba(224,192,138,0.3)', 'rgba(212,165,116,0.5)', 'rgba(224,192,138,0.3)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
+                    <motion.section initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.4, duration: 0.5 }} className={`relative overflow-hidden rounded-[2rem] border ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_18px_55px_rgba(0,0,0,0.18)]`}>
+                        <motion.div className={`pointer-events-none absolute inset-0 rounded-[2rem] border ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
                         <h2 className={`font-[Times_New_Roman,serif] text-2xl mb-4 ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.bookmarks}</h2>
                         {bookmarks.length === 0 ? (
                             <p className={`text-center py-8 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{copy.noBookmarks}</p>
@@ -353,15 +353,15 @@ function BibleApp({ language = 'en' }) {
                         )}
                     </motion.section>
                     {/* Books Section */}
-                    <motion.section initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.5, duration: 0.5 }} className={`relative overflow-hidden rounded-3xl border-2 ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_0_60px_rgba(173,117,36,0.2)]`}>
-                        <motion.div animate={{ borderColor: isDarkMode ? ['rgba(245,214,129,0.3)', 'rgba(240,198,109,0.6)', 'rgba(245,214,129,0.3)'] : ['rgba(224,192,138,0.3)', 'rgba(212,165,116,0.5)', 'rgba(224,192,138,0.3)'] }} transition={{ duration: 3, repeat: Infinity }} className={`pointer-events-none absolute inset-0 rounded-3xl border-2 ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
+                    <motion.section initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.5, duration: 0.5 }} className={`relative overflow-hidden rounded-[2rem] border ${isDarkMode ? 'border-[#f0c66d]/60 bg-[#140f09]/90' : 'border-[#d4a574]/60 bg-[#fff9f0]/90'} p-6 shadow-[0_18px_55px_rgba(0,0,0,0.18)]`}>
+                        <motion.div className={`pointer-events-none absolute inset-0 rounded-[2rem] border ${isDarkMode ? 'border-[#f5d681]/40' : 'border-[#e0c08a]/30'}`} />
                         <div className={`pointer-events-none absolute inset-0 animate-[pulse_4s_ease-in-out_infinite] opacity-35 ${isDarkMode ? '[background-image:linear-gradient(120deg,transparent_0%,rgba(255,229,144,0.14)_48%,transparent_100%)]' : '[background-image:linear-gradient(120deg,transparent_0%,rgba(240,198,109,0.10)_48%,transparent_100%)]'} [background-size:200%_200%]`} />
                         <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                             <div>
                                 <h2 className={`font-[Times_New_Roman,serif] text-2xl ${isDarkMode ? 'text-[#fff2c8]' : 'text-[#4a2c15]'}`}>{copy.booksTitle}</h2>
                                 <p className={`mt-2 ${isDarkMode ? 'text-[#d8c39b]' : 'text-[#6b4d32]'}`}>{copy.booksIntro}</p>
                             </div>
-                            <div className={`flex items-center gap-2 rounded-3xl border-2 ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07]' : 'border-[#d4a574]/50 bg-[#fffcf7]'} px-3 py-2`}>
+                            <div className={`flex items-center gap-2 rounded-[2rem] border ${isDarkMode ? 'border-[#7f5128]/50 bg-[#120c07]' : 'border-[#d4a574]/50 bg-[#fffcf7]'} px-3 py-2`}>
                                 <Search size={16} className={isDarkMode ? 'text-[#f0c66d]' : 'text-[#b07c22]'} />
                                 <input value={search} onChange={(e) => setSearch(e.target.value)} className={`w-full bg-transparent text-sm outline-none sm:w-56 ${isDarkMode ? 'text-[#fff7df]' : 'text-[#4a2c15]'}`} placeholder={copy.chapterPlaceholder} />
                             </div>
