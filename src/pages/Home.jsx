@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, BookMarked, Compass, Heart, ScrollText, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useBooks } from '../context/BooksContext'
+import { weeklyMessage } from '../data/weeklyMessage'
 
 const studyGuides = {
   en: [
@@ -48,6 +49,12 @@ function Home({ language }) {
           <motion.aside initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.45 }} className="rounded-[1.5rem] border border-[#9f6d2b]/40 bg-[linear-gradient(145deg,rgba(37,22,10,0.95),rgba(16,10,5,0.9))] p-5 shadow-[inset_0_0_40px_rgba(255,195,96,0.18)]"><div className="flex items-center gap-3"><BookMarked className="text-[#f3d28b]" size={20} /><div><p className="text-sm uppercase tracking-[0.2em] text-[#e7c476]">{isTamil ? 'வாசிப்பைத் தொடங்குங்கள்' : 'Begin your journey'}</p><p className="text-sm text-[#d5b97b]">{books.length} {isTamil ? 'வேதாகமப் புத்தகங்கள்' : 'books of the Bible'}</p></div></div><div className="mt-5 space-y-3">{featuredVerses.map((verse) => <div key={verse.reference} className="rounded-2xl border border-[#7a4f20]/50 bg-[#120c07]/60 px-4 py-3"><p className="font-semibold text-[#f7d86b]">{verse.reference}</p><p className="mt-1 text-sm leading-6 text-[#e7d4a8]">{verse.text}</p></div>)}</div></motion.aside>
         </div>
       </section>
+      <motion.section initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="overflow-hidden rounded-[2rem] border border-[#b27b35]/40 bg-[#140f0a]/90 shadow-[0_0_55px_rgba(196,132,35,0.16)]">
+        <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
+          <img src={weeklyMessage.image} alt="Weekly church message" loading="lazy" decoding="async" className="h-72 w-full object-cover lg:h-full" />
+          <div className="p-7 sm:p-10"><p className="text-xs font-bold uppercase tracking-[0.25em] text-[#e7c476]">{weeklyMessage.dateLabel}</p><h2 className="mt-3 font-[Times_New_Roman,serif] text-3xl text-[#fff2c3] sm:text-4xl">{weeklyMessage.title}</h2><blockquote className="mt-5 border-l-2 border-[#e3b04b] pl-5"><p className="font-semibold text-[#f7d86b]">{weeklyMessage.verse}</p><p className="mt-2 text-lg leading-8 text-[#f1dfb6]">“{weeklyMessage.verseText}”</p></blockquote><p className="mt-6 leading-8 text-[#d7c28b]">{weeklyMessage.message}</p></div>
+        </div>
+      </motion.section>
       <section className="grid gap-6 lg:grid-cols-3">{guides.map((item, index) => <motion.article key={item.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.08 }} className="rounded-[1.5rem] border border-[#7f5128]/40 bg-[#140f0a]/80 p-6 shadow-[0_0_30px_rgba(173,117,36,0.16)]"><item.icon className="mb-4 text-[#f0c66d]" size={24} /><h2 className="mb-2 font-[Times_New_Roman,serif] text-xl text-[#fff5d3]">{item.title}</h2><p className="text-[#d7c28b]">{item.text}</p></motion.article>)}</section>
     </div>
   )
